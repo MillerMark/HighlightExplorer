@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="HighlightExplorer.ForegroundBackgroundPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HighlightExplorer"
+             mc:Ignorable="d" d:DesignWidth="572" Height="78">
+	<Canvas x:Name="cvsWorkArea" Width="572">
+		<Rectangle x:Name="rctBackground" Width="0.5" Height="28" Fill="Black" Canvas.Left="50" Visibility="Hidden"/>
+		<Rectangle x:Name="rctForeground" Width="0.5" Height="28" Fill="Black" Canvas.Left="50" Visibility="Hidden"/>
+
+		<StackPanel x:Name="ArrowGray" HorizontalAlignment="Center" Canvas.Left="245" Canvas.Top="2" Visibility="Hidden">
+			<StackPanel Orientation="Horizontal">
+				<Viewbox Height="10" x:Name="LeftArrowHeadGray">
+					<Canvas Width="17" Height="15">
+						<Polygon Points="18.5,15.5 -0.5,7.5 18.5,-0.5" FillRule="EvenOdd" Fill="#FFA0A0A0" Stroke="{x:Null}" />
+					</Canvas>
+				</Viewbox>
+
+				<Rectangle x:Name="ArrowShaftGray" Width="50" Height="3" Fill="#FFA0A0A0" />
+
+				<Viewbox Height="10" x:Name="RightArrowHeadGray">
+					<Canvas Width="17" Height="15">
+						<Polygon Points="-0.5,-0.5 17.5,7.5 -0.5,15.5" FillRule="EvenOdd" Fill="#FFA0A0A0" Stroke="{x:Null}" />
+					</Canvas>
+				</Viewbox>
+			</StackPanel>
+			<TextBlock x:Name="tbGrayPercentDistance" Text="100%" Width="Auto" Height="Auto" HorizontalAlignment="Center" Margin="0,-3,0,3"/>
+
+		</StackPanel>
+
+		<Viewbox x:Name="ctlForeground" Height="50" Canvas.Left="9" Canvas.Top="31">
+			<Canvas Width="144" Height="78">
+				<Path Fill="#FF000000" Stroke="#FFD9D9D9" StrokeThickness="1" StrokeMiterLimit="10">
+					<Path.Data>
+						<PathGeometry Figures="M72.5,1L85.25,27.6875 131.4375,27.6875C135.625,27.6875,139,31.0625,139,35.25L139,65.5C139,69.625,135.625,73,131.4375,73L13.5625,73C9.4375,73,6,69.625,6,65.5L6,35.25C6,31.0625,9.4375,27.6875,13.5625,27.6875L59.8125,27.6875 72.5,1z" />
+					</Path.Data>
+				</Path>
+				<TextBlock Text="Foreground" FontFamily="Calibri" FontSize="24" Foreground="#FFFFFFFF" Canvas.Left="15" Canvas.Top="35" />
+			</Canvas>
+		</Viewbox>
+
+		<Viewbox x:Name="ctlBackground" Height="50" Canvas.Left="9" Canvas.Top="0">
+			<Canvas Width="146" Height="78">
+				<Path Fill="#FFFFFFFF" Stroke="#FF7F7F7F" StrokeThickness="1" StrokeMiterLimit="10">
+					<Path.Data>
+						<PathGeometry Figures="M73,1L85.6875,27.6875 131.5,27.6875C135.6875,27.6875,139,31.0625,139,35.25L139,65.5C139,69.625,135.6875,73,131.5,73L14.5625,73C10.375,73,7,69.625,7,65.5L7,35.25C7,31.0625,10.375,27.6875,14.5625,27.6875L60.375,27.6875 73,1z" />
+					</Path.Data>
+				</Path>
+				<TextBlock Text="Background" FontFamily="Calibri" FontSize="24" Foreground="#FF000000" Canvas.Left="15" Canvas.Top="35" />
+			</Canvas>
+		</Viewbox>
+
+
+
+
+
+
+	</Canvas>
+</UserControl>
