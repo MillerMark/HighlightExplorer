@@ -56,6 +56,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BoolToVisibleOrHidden.cs" />
+    <Compile Include="ColorExtensions.cs" />
+    <Compile Include="HueSatLight.cs" />
     <Compile Include="PositionChangedEventArgs.cs" />
     <Compile Include="SliderHelper.cs" />
     <Page Include="ForegroundBackgroundPicker.xaml">
@@ -70,12 +72,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="..\StepDiagrammer\StepDiagrammer\Painting\ColorExtensions.cs">
-      <Link>ColorExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\StepDiagrammer\StepDiagrammer\Painting\HueSatLight.cs">
-      <Link>HueSatLight.cs</Link>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
