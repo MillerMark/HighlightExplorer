@@ -33,11 +33,25 @@ namespace HighlightExplorer
 		double foregroundBrightness;
 		double foregroundHue;
 		bool changingInternally;
+		bool maintainHighlightBrightness;
+		double lastHighlightBrightness;
 		double foregroundSaturation;
 		public MainWindow()
 		{
 			InitializeComponent();
 			BuildHueBar();
+			StyleW3Warnings();
+		}
+		void StyleW3Warnings()
+		{
+			StyleWarning(tbBackForeWCAGWarningAA);
+			StyleWarning(tbBackForeWCAGWarningAALarge);
+			StyleWarning(tbBackForeWCAGWarningAAA);
+			StyleWarning(tbBackForeWCAGWarningAAALarge);
+			StyleWarning(tbHighTextWCAGWarningAA);
+			StyleWarning(tbHighTextWCAGWarningAALarge);
+			StyleWarning(tbHighTextWCAGWarningAAA);
+			StyleWarning(tbHighTextWCAGWarningAAALarge);
 		}
 
 		private void BuildHueBar()
@@ -51,7 +65,7 @@ namespace HighlightExplorer
 				stop.Offset = i;
 				fill.GradientStops.Add(stop);
 			}
-			
+
 			this.barHue.Fill = fill;
 		}
 
@@ -74,6 +88,14 @@ namespace HighlightExplorer
 			hueSatLight.Hue = highlightHue;
 			hueSatLight.Saturation = highlightSaturation;
 			hueSatLight.Lightness = highlightBrightness;
+
+			//if (maintainHighlightBrightness)
+			//{
+			// TODO: Implement ChangeLightPerceivedBrightnessTo.
+			//	hueSatLight.ChangeLightPerceivedBrightnessTo(lastHighlightBrightness);
+			//	highlightSaturation = hueSatLight.Saturation;
+			//	highlightBrightness = hueSatLight.Lightness;
+			//}
 			return hueSatLight;
 		}
 
@@ -136,8 +158,8 @@ namespace HighlightExplorer
 			clrBackgroundGrayscale.Fill = new SolidColorBrush(newGrayScale);
 
 			ctlPerceivedBrightnessBackgroundForeground.BackgroundValue = newGrayScale.GetBrightness();
-            ctlPerceivedBrightnessHighlightText.BackgroundValue = newGrayScale.GetBrightness();
-            UpdateIssues();
+			ctlPerceivedBrightnessHighlightText.BackgroundValue = newGrayScale.GetBrightness();
+			UpdateIssues();
 			UpdateColorTextBoxes();
 		}
 
@@ -183,6 +205,8 @@ namespace HighlightExplorer
 			var foregroundColor = GetForegroundColor();
 			var highlightColor = GetHighlightColor();
 			var textColor = GetTextColor();
+			ShowWcagWarnings(backgroundColor, foregroundColor, highlightColor, textColor);
+
 			double backgroundSaturationLevel = GetSaturationLevel(backgroundColor);
 			double foregroundSaturationLevel = GetSaturationLevel(foregroundColor);
 			double highlightSaturationLevel = GetSaturationLevel(highlightColor);
@@ -197,12 +221,103 @@ namespace HighlightExplorer
 				tbDistanceHighlightToText.Visibility == Visibility.Visible ||
 				tbBackgroundSaturationWarning.Visibility == Visibility.Visible ||
 				tbForegroundSaturationWarning.Visibility == Visibility.Visible ||
-				tbHighlightSaturationWarning.Visibility == Visibility.Visible)
+				tbHighlightSaturationWarning.Visibility == Visibility.Visible ||
+				tbBackForeWCAGWarningAA.Visibility == Visibility.Visible ||
+				tbBackForeWCAGWarningAALarge.Visibility == Visibility.Visible ||
+				tbBackForeWCAGWarningAAA.Visibility == Visibility.Visible ||
+				tbBackForeWCAGWarningAAALarge.Visibility == Visibility.Visible ||
+				tbHighTextWCAGWarningAA.Visibility == Visibility.Visible ||
+				tbHighTextWCAGWarningAALarge.Visibility == Visibility.Visible ||
+				tbHighTextWCAGWarningAAA.Visibility == Visibility.Visible ||
+				tbHighTextWCAGWarningAAALarge.Visibility == Visibility.Visible)
 				tbIssues.Visibility = Visibility.Visible;
 			else
 				tbIssues.Visibility = Visibility.Hidden;
 
 			//Title = string.Format("B: {0:0.000}, F: {1:0.000}, Highlight: {2:0.000}, Text: {3:0.000}", backgroundSaturationLevel, foregroundSaturationLevel, highlightSaturationLevel, textSaturationLevel);
+		}
+
+		void ShowBackForeContrastValues(double contrastRatio)
+		{
+			SetContrastValue(contrastRatio >= 3, icoBackForeAaLargeYes, icoBackForeAaLargeNo);
+			SetContrastValue(contrastRatio >= 4.5, icoBackForeAaaLargeYes, icoBackForeAaaLargeNo);
+			SetContrastValue(contrastRatio >= 4.5, icoBackForeAaYes, icoBackForeAaNo);
+			SetContrastValue(contrastRatio >= 7, icoBackForeAaaYes, icoBackForeAaaNo);
+		}
+
+		void ShowHighTextContrastValues(double contrastRatio)
+		{
+			SetContrastValue(contrastRatio >= 3, icoHighTextAaLargeYes, icoHighTextAaLargeNo);
+			SetContrastValue(contrastRatio >= 4.5, icoHighTextAaaLargeYes, icoHighTextAaaLargeNo);
+			SetContrastValue(contrastRatio >= 4.5, icoHighTextAaYes, icoHighTextAaNo);
+			SetContrastValue(contrastRatio >= 7, icoHighTextAaaYes, icoHighTextAaaNo);
+		}
+
+		private void SetContrastValue(bool isSet, Viewbox yes, Viewbox no)
+		{
+			if (isSet)
+			{
+				yes.Visibility = Visibility.Visible;
+				no.Visibility = Visibility.Hidden;
+			}
+			else
+			{
+				yes.Visibility = Visibility.Hidden;
+				no.Visibility = Visibility.Visible;
+			}
+		}
+
+		private void ShowWcagWarnings(HueSatLight backgroundColor, HueSatLight foregroundColor, HueSatLight highlightColor, HueSatLight textColor)
+		{
+			if (tbBackForeWCAGWarningAA == null)
+				return;
+			double backForeContrastRatio = GetContrastRatio(backgroundColor, foregroundColor);
+			ShowBackForeContrastValues(backForeContrastRatio);
+			//ShowContrastRatioWarnings("Background/Foreground", backForeContrastRatio, tbBackForeWCAGWarningAA, tbBackForeWCAGWarningAALarge, tbBackForeWCAGWarningAAA, tbBackForeWCAGWarningAAALarge);
+
+			double highlightTextContrastRatio = GetContrastRatio(highlightColor, textColor);
+			ShowHighTextContrastValues(highlightTextContrastRatio);
+			//ShowContrastRatioWarnings("Highlight/Text", highlightTextContrastRatio, tbHighTextWCAGWarningAA, tbHighTextWCAGWarningAALarge, tbHighTextWCAGWarningAAA, tbHighTextWCAGWarningAAALarge);
+
+			tbBackForeContrastRatio.Text = string.Format("{0:0.##} : 1", backForeContrastRatio);
+			tbHighTextContrastRatio.Text = string.Format("{0:0.##} : 1", highlightTextContrastRatio);
+		}
+
+		//private void ShowContrastRatioWarnings(string ratioName, double contrastRatio, TextBlock warningAA, TextBlock warningAALarge, TextBlock warningAAA, TextBlock warningAAALarge)
+		//{
+		//	warningAA.Visibility = Visibility.Collapsed;
+		//	warningAALarge.Visibility = Visibility.Collapsed;
+		//	warningAAA.Visibility = Visibility.Collapsed;
+		//	warningAAALarge.Visibility = Visibility.Collapsed;
+		//	return;
+
+		//	if (contrastRatio < 7)
+		//	{
+		//		if (contrastRatio < 3)
+		//		{
+		//			//icoBackForeAaaLargeYes
+		//			//warningAALarge.Text = string.Format("{1} contrast ratio ({0:0.##}:1) fails to meet WCAG 2.0 1.4.3 (Level AA) guidelines for large text.", contrastRatio, ratioName);
+		//			//warningAALarge.Visibility = Visibility.Visible;
+		//		}
+
+		//		if (contrastRatio < 4.5)
+		//		{
+		//			warningAA.Text = string.Format("{1} contrast ratio ({0:0.##}:1) fails to meet WCAG 2.0 1.4.3 (Level AA) guidelines for normal text.", contrastRatio, ratioName);
+		//			warningAAALarge.Text = string.Format("{1} contrast ratio ({0:0.##}:1) fails to meet WCAG 2.0 1.4.6 (Level AAA) guidelines for large text.", contrastRatio, ratioName);
+		//			warningAA.Visibility = Visibility.Visible;
+		//			warningAAALarge.Visibility = Visibility.Visible;
+		//		}
+		//		warningAAA.Text = string.Format("{1} contrast ratio ({0:0.##}:1) fails to meet WCAG 2.0 1.4.6 (Level AAA) guidelines for normal text.", contrastRatio, ratioName);
+		//		warningAAA.Visibility = Visibility.Visible;
+		//	}
+		//}
+
+		private static double GetContrastRatio(HueSatLight backgroundColor, HueSatLight foregroundColor)
+		{
+			double backForeContrastRatio = (backgroundColor.GetRelativeLuminance() + 0.05) / (foregroundColor.GetRelativeLuminance() + 0.05);
+			if (backForeContrastRatio < 1)
+				backForeContrastRatio = 1 / backForeContrastRatio;
+			return backForeContrastRatio;
 		}
 
 		private void ShowSaturationIssue(double saturationLevel, double warningThreshold, double hintThreshold, TextBlock textBlock, string warningMsg, string hintMsg)
@@ -381,7 +496,7 @@ namespace HighlightExplorer
 			tbxBackground.Text = backStr;
 			tbxForeground.Text = foreStr;
 			tbxHighlight.Text = highlightStr;
-			tbxHighlightText.Text = textStr; 
+			tbxHighlightText.Text = textStr;
 		}
 
 		private void tbxBackground_TextChanged(object sender, TextChangedEventArgs e)
@@ -503,17 +618,17 @@ namespace HighlightExplorer
 
 		private void rbnGreen_Checked(object sender, RoutedEventArgs e)
 		{
-			SetColors("#FEFFFF", "#817C79", "#48EC32", "#213A1E");
+			SetColors("#FEFFFF", "#54514F", "#48EC32", "#213A1E");
 		}
 
 		private void rbnReverse_Checked(object sender, RoutedEventArgs e)
 		{
-			SetColors("#FFFFFF", "#000000", "#2A71CF", "#FFFFFF");
+			SetColors("#FFFFFF", "#000000", "#18529F", "#FFFFFF");
 		}
 
 		private void rbnDarkTheme_Checked(object sender, RoutedEventArgs e)
 		{
-			SetColors("#000000", "#DDDDDD", "#A8225C", "#FFFFFF");
+			SetColors("#000000", "#DDDDDD", "#A2275C", "#FFFFFF");
 		}
 
 		private void rbnSameBrightness_Checked(object sender, RoutedEventArgs e)
@@ -528,13 +643,13 @@ namespace HighlightExplorer
 
 		private void rbnMinDistances_Checked(object sender, RoutedEventArgs e)
 		{
-			SetColors("#FFFFFF", "#BEBEBE", "#FBEFF1", "#D89F9F");
+			SetColors("#FFFFFF", "#BEBEBE", "#FAEFF1", "#D89F9F");
 		}
 
 		private void rbnMinDistances_Loaded(object sender, RoutedEventArgs e)
 		{
 			SetColors("#000000", "#000000", "#000000", "#000000");
-			SetColors("#FFFFFF", "#5479C7", "#CAF4ED", "#002A23");
+			SetColors("#FFFFFF", "#33559C", "#A8F6E9", "#002A23");
 		}
 
 		private void rbnVSRename_Checked(object sender, RoutedEventArgs e)
@@ -549,7 +664,7 @@ namespace HighlightExplorer
 
 		private void rbnBlues_Checked(object sender, RoutedEventArgs e)
 		{
-			SetColors("#000E29", "#B0CCFF", "#205AC4", "#EEF4FF");
+			SetColors("#000E29", "#B0CCFF", "#1A4BA4", "#EEF4FF");
 		}
 
 		private void rbnH1_Checked(object sender, RoutedEventArgs e)
@@ -565,6 +680,11 @@ namespace HighlightExplorer
 		private void rbnGray_Checked(object sender, RoutedEventArgs e)
 		{
 			SetColors("#737373", "#FFFFFF", "#FFFFFF", "#141414");
+		}
+
+		private void rbnTeal_Checked(object sender, RoutedEventArgs e)
+		{
+			SetColors("#FFFCFC", "#000000", "#63C5E7", "#000000");
 		}
 
 		private void tbxBackground_GotFocus(object sender, RoutedEventArgs e)
@@ -587,6 +707,72 @@ namespace HighlightExplorer
 			tbxHighlightText.SelectAll();
 		}
 
+		private void chkShowWcagWarnings_Checked(object sender, RoutedEventArgs e)
+		{
+			UpdateWcagWarnings();
+		}
 
+		private void UpdateWcagWarnings()
+		{
+			var backgroundColor = GetBackgroundColor();
+			var foregroundColor = GetForegroundColor();
+			var highlightColor = GetHighlightColor();
+			var textColor = GetTextColor();
+			ShowWcagWarnings(backgroundColor, foregroundColor, highlightColor, textColor);
+		}
+
+		private void chkShowWcagWarnings_Unchecked(object sender, RoutedEventArgs e)
+		{
+			UpdateWcagWarnings();
+		}
+
+		private void ctlHueHighlightText_BeforeHighlightChanged(object sender, double e)
+		{
+			// TODO: Implement shift+Hue slider dragging to maintain perceived brightness
+			//if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+			//{
+			//	maintainHighlightBrightness = true;
+			//	var highlightColor = GetHighlightColor();
+			//	lastHighlightBrightness = highlightColor.AsGrayScale.GetBrightness();
+			//}
+			//else
+			//	maintainHighlightBrightness = false;
+		}
+
+		private void ctlHueHighlightText_BeforeTextChanged(object sender, double e)
+		{
+			// TODO: Implement shift+Hue slider dragging to maintain perceived brightness
+		}
+
+		private void ctlHueHighlightText_AfterHighlightChanged(object sender, double e)
+		{
+			// TODO: Implement shift+Hue slider dragging to maintain perceived brightness
+			//maintainHighlightBrightness = false;
+		}
+
+		private void ctlHueHighlightText_AfterTextChanged(object sender, double e)
+		{
+			// TODO: Implement shift+Hue slider dragging to maintain perceived brightness
+		}
+
+		private void ctlHueBackgroundForeground_AfterBackgroundChanged(object sender, double e)
+		{
+			// TODO: Implement shift+Hue slider dragging to maintain perceived brightness
+		}
+
+		private void ctlHueBackgroundForeground_AfterForegroundChanged(object sender, double e)
+		{
+			// TODO: Implement shift+Hue slider dragging to maintain perceived brightness
+		}
+
+		private void ctlHueBackgroundForeground_BeforeBackgroundChanged(object sender, double e)
+		{
+			// TODO: Implement shift+Hue slider dragging to maintain perceived brightness
+		}
+
+		private void ctlHueBackgroundForeground_BeforeForegroundChanged(object sender, double e)
+		{
+			// TODO: Implement shift+Hue slider dragging to maintain perceived brightness
+		}
 	}
 }

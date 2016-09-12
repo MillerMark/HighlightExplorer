@@ -64,10 +64,12 @@ namespace HighlightExplorer
 				rctForeground.Visibility = Visibility.Hidden;
 				ArrowGray.Visibility = Visibility.Hidden;
 				SliderHelper.EnableDrag(ctlForeground);
-				ctlForeground.MouseUp += SliderMouseUp;
-				SliderHelper.EnableDrag(ctlBackground);
-				ctlBackground.MouseUp += SliderMouseUp;
-				SliderHelper.PositionChanged += SliderHelper_PositionChanged;
+                SliderHelper.EnableDrag(ctlBackground);
+                ctlForeground.MouseUp += SliderMouseUp;
+                ctlBackground.MouseUp += SliderMouseUp;
+                ctlForeground.MouseDown += CtlForeground_MouseDown;
+                ctlBackground.MouseDown += CtlBackground_MouseDown;
+                SliderHelper.PositionChanged += SliderHelper_PositionChanged;
 			}
 			else
 			{
@@ -76,13 +78,25 @@ namespace HighlightExplorer
 				rctForeground.Visibility = Visibility.Visible;
 				SliderHelper.DisableDrag(ctlForeground);
 				ctlForeground.MouseUp -= SliderMouseUp;
-				SliderHelper.DisableDrag(ctlBackground);
+                ctlForeground.MouseDown -= CtlForeground_MouseDown;
+                SliderHelper.DisableDrag(ctlBackground);
 				ctlBackground.MouseUp -= SliderMouseUp;
-				SliderHelper.PositionChanged -= SliderHelper_PositionChanged;
+                ctlBackground.MouseDown -= CtlForeground_MouseDown;
+                SliderHelper.PositionChanged -= SliderHelper_PositionChanged;
 			}
 		}
 
-		void PositionBackgroundForegroundArrow()
+        private void CtlBackground_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OnBeforeBackgroundChanged(ctlBackground, (double)ctlBackground.Tag);
+        }
+
+        private void CtlForeground_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OnBeforeForegroundChanged(ctlForeground, (double)ctlForeground.Tag);
+        }
+
+        void PositionBackgroundForegroundArrow()
 		{
 			SliderHelper.PositionArrow(ArrowGray, BackgroundValue, ForegroundValue, ArrowShaftGray, tbGrayPercentDistance);
 		}
@@ -100,9 +114,13 @@ namespace HighlightExplorer
 			}
 		}
 
-		public event EventHandler<double> ForegroundChanged;
-		public event EventHandler<double> BackgroundChanged;
-		protected virtual void OnForegroundChanged(object sender, double e)
+		public event EventHandler<double> BeforeForegroundChanged;
+        public event EventHandler<double> ForegroundChanged;
+        public event EventHandler<double> AfterForegroundChanged;
+        public event EventHandler<double> BeforeBackgroundChanged;
+        public event EventHandler<double> BackgroundChanged;
+        public event EventHandler<double> AfterBackgroundChanged;
+        protected virtual void OnForegroundChanged(object sender, double e)
 		{
 			ForegroundChanged?.Invoke(sender, e);
 		}
@@ -111,8 +129,26 @@ namespace HighlightExplorer
 			BackgroundChanged?.Invoke(sender, e);
 		}
 
-		#region Dependency Properties...
-		public static readonly DependencyProperty BackgroundValueProperty = DependencyProperty.Register("BackgroundValue", typeof(double), typeof(ForegroundBackgroundPicker), new PropertyMetadata(0.0, new PropertyChangedCallback(OnBackgroundValueChanged)));
+        protected virtual void OnBeforeForegroundChanged(object sender, double e)
+        {
+            BeforeForegroundChanged?.Invoke(sender, e);
+        }
+        protected virtual void OnBeforeBackgroundChanged(object sender, double e)
+        {
+            BeforeBackgroundChanged?.Invoke(sender, e);
+        }
+
+        protected virtual void OnAfterForegroundChanged(object sender, double e)
+        {
+            AfterForegroundChanged?.Invoke(sender, e);
+        }
+        protected virtual void OnAfterBackgroundChanged(object sender, double e)
+        {
+            AfterBackgroundChanged?.Invoke(sender, e);
+        }
+
+        #region Dependency Properties...
+        public static readonly DependencyProperty BackgroundValueProperty = DependencyProperty.Register("BackgroundValue", typeof(double), typeof(ForegroundBackgroundPicker), new PropertyMetadata(0.0, new PropertyChangedCallback(OnBackgroundValueChanged)));
 		
 		private static void OnBackgroundValueChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
@@ -189,7 +225,9 @@ namespace HighlightExplorer
 				SliderHelper.EnableDrag(ctlForeground);
 				ctlForeground.MouseUp += SliderMouseUp;
 				SliderHelper.PositionChanged += SliderHelper_PositionChanged;
-			}
+                ctlForeground.MouseDown += CtlForeground_MouseDown;
+                ctlBackground.MouseDown += CtlBackground_MouseDown;
+            }
 		}
 
 		private void SliderHelper_PositionChanged(object sender, PositionChangedEventArgs ea)
