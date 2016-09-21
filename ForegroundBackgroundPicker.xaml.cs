@@ -230,11 +230,6 @@ namespace HighlightExplorer
             }
 		}
 
-		private void SliderHelper_PositionChanged(object sender, PositionChangedEventArgs ea)
-		{
-			SetPosition(ea.Element, ea.Position);
-		}
-
 		private void SliderMouseUp(object sender, MouseButtonEventArgs e)
 		{
 			var element = (UIElement)sender;
@@ -257,7 +252,12 @@ namespace HighlightExplorer
 				PopupIfNeeded(ctlForeground, ctlBackground);
 		}
 
-		void SetPosition(UIElement uIElement, double position)
+		private void SliderHelper_PositionChanged(object sender, PositionChangedEventArgs ea)
+		{
+      SetPosition(ea.Element, ea.Position, "Moving");
+		}
+
+		void SetPosition(UIElement uIElement, double position, string logMessage)
 		{
 			if (uIElement == ctlBackground)
 			{

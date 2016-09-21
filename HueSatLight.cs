@@ -39,7 +39,6 @@ namespace StepDiagrammer
 		public HueSatLight(string htmlColorStr) : this((Color)ColorConverter.ConvertFromString(htmlColorStr))
 		{
 		}
-
 		#endregion
 
 		// public methods...

@@ -199,6 +199,7 @@ namespace HighlightExplorer
 			ShowIssue(highlightDistance, 5, "Background and highlight colors should be more distinct.", "Background and highlight colors are close and could be more distinct.", tbDistanceBackgroundToHighlight, ctlPerceivedBrightnessHighlightText.tbRedPercentDistance);
 
 			var textDistance = Math.Abs(ctlPerceivedBrightnessHighlightText.TextValue - ctlPerceivedBrightnessHighlightText.HighlightValue) * 100;
+			
 			ShowIssue(textDistance, 20, "Text and highlight colors should be more distinct.", "Text and highlight colors are close and could be more distinct.", tbDistanceHighlightToText, ctlPerceivedBrightnessHighlightText.tbBluePercentDistance);
 
 			var backgroundColor = GetBackgroundColor();
@@ -379,27 +380,27 @@ namespace HighlightExplorer
 		//	return difference;
 		//}
 
-		private void ShowDistance(double distance, TextBlock textBlock1, TextBlock textBlock2, double minPercent)
-		{
-			textBlock1.Text = string.Format("{0:0.00}%", distance);
-			if (distance < minPercent)
-			{
-				textBlock1.Text += " (WARNING: Distance Not Safe!)";
-				StyleHint(textBlock1);
-				StyleHint(textBlock2);
-			}
-			else if (distance < minPercent * 2)
-			{
-				textBlock1.Text += " (HINT: Distance could be wider)";
-				StyleWarning(textBlock1);
-				StyleWarning(textBlock2);
-			}
-			else
-			{
-				StyleNormal(textBlock1);
-				StyleNormal(textBlock2);
-			}
-		}
+		//private void ShowDistance(double distance, TextBlock textBlock1, TextBlock textBlock2, double minPercent)
+		//{
+		//	textBlock1.Text = string.Format("{0:0.00}%", distance);
+		//	if (distance < minPercent)
+		//	{
+		//		textBlock1.Text += " (WARNING: Distance Not Safe!)";
+		//		StyleHint(textBlock1);
+		//		StyleHint(textBlock2);
+		//	}
+		//	else if (distance < minPercent * 2)
+		//	{
+		//		textBlock1.Text += " (HINT: Distance could be wider)";
+		//		StyleWarning(textBlock1);
+		//		StyleWarning(textBlock2);
+		//	}
+		//	else
+		//	{
+		//		StyleNormal(textBlock1);
+		//		StyleNormal(textBlock2);
+		//	}
+		//}
 
 		private static void StyleNormal(TextBlock textBlock1)
 		{
@@ -654,7 +655,7 @@ namespace HighlightExplorer
 
 		private void rbnVSRename_Checked(object sender, RoutedEventArgs e)
 		{
-			SetColors("#5bb1ab", "#006400", "#77c177", "#006400");
+			SetColors("#77c177", "#006400", "#5bb1ab", "#006400");
 		}
 
 		private void rbnHighlightYellow_Checked(object sender, RoutedEventArgs e)
@@ -775,4 +776,5 @@ namespace HighlightExplorer
 			// TODO: Implement shift+Hue slider dragging to maintain perceived brightness
 		}
 	}
+	
 }
