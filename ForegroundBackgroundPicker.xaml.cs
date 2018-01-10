@@ -20,6 +20,21 @@ namespace HighlightExplorer
 	/// </summary>
 	public partial class ForegroundBackgroundPicker : UserControl
 	{
+		public bool ShowForegroundControl
+		{
+			get
+			{
+				return ctlForeground.Visibility == Visibility.Visible;
+			}
+			set
+			{
+				if (value)
+					ctlForeground.Visibility = Visibility.Visible;
+				else
+					ctlForeground.Visibility = Visibility.Hidden;
+			}
+		}
+		
 		public static readonly DependencyProperty InnerPaddingProperty = DependencyProperty.Register("InnerPadding", typeof(int), typeof(ForegroundBackgroundPicker), new PropertyMetadata(0, new PropertyChangedCallback(OnInnerPaddingChanged)));
 
 		private static void OnInnerPaddingChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)

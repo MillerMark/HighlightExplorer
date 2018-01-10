@@ -6,379 +6,415 @@
         xmlns:local="clr-namespace:HighlightExplorer"
         mc:Ignorable="d"
         Title="Highlight Explorer" Height="720" Width="1280" WindowState="Maximized">
-	<StackPanel Orientation="Horizontal" Margin="12,15,0,0">
-		<StackPanel Height="Auto" Width="619" Margin="0,10" VerticalAlignment="Stretch">
-			<StackPanel x:Name="spRadioButtons" Orientation="Horizontal" >
-				<TextBlock Text="Presets: " Width="Auto" Height="Auto" Margin="0,-1,0,0"/>
-				<WrapPanel x:Name="spPresets" Orientation="Horizontal" Width="564" >
-					<RadioButton x:Name="rbnHighlightYellow" Margin="16,0,0,6" Content="Highlight Yellow" Checked="rbnHighlightYellow_Checked"/>
-					<RadioButton x:Name="rbnReverse" Margin="16,0,0,6" Content="White on Blue" Checked="rbnReverse_Checked"/>
-					<RadioButton x:Name="rbnGreen" Margin="16,0,0,6" Content="Green" Checked="rbnGreen_Checked"/>
-					<RadioButton x:Name="rbnDarkTheme" Margin="16,0,0,6" Content="Dark Theme" Checked="rbnDarkTheme_Checked" />
-					<RadioButton x:Name="rbnBlues" Margin="16,0,0,6" Content="Blues" Checked="rbnBlues_Checked" />
-					<RadioButton x:Name="rbnVSRename" Margin="16,0,0,6" Content="VS Rename" Checked="rbnVSRename_Checked" />
-					<RadioButton x:Name="rbnMinDistances" Margin="16,0,0,6" Content="Min Distances" Checked="rbnMinDistances_Checked" Loaded="rbnMinDistances_Loaded" />
-					<RadioButton x:Name="rbnSameBrightness" Margin="16,0,0,6" Content="Same Brightness" Checked="rbnSameBrightness_Checked" />
-					<RadioButton x:Name="rbnWideLightness" Margin="16,0,0,6" Content="Wide Lightness" Checked="rbnWideLightness_Checked" />
-					<RadioButton x:Name="rbnH1" Margin="16,0,0,6" Content="H1" Checked="rbnH1_Checked" />
-					<RadioButton x:Name="rbnH2" Margin="16,0,0,6" Content="H2" Checked="rbnH2_Checked" />
-					<RadioButton x:Name="rbnGray" Margin="16,0,0,6" Content="Gray" Checked="rbnGray_Checked" />
-					<RadioButton x:Name="rbnTeal" Margin="16,0,0,6" Content="Teal" Checked="rbnTeal_Checked" />
-				</WrapPanel>
+	<Viewbox Stretch="Uniform" Margin="20" >
+		<StackPanel Orientation="Horizontal" Margin="0,0,0,0" Height="Auto" Width="Auto">
+			<StackPanel Height="Auto" Width="619" Margin="0,10" VerticalAlignment="Stretch">
+				<StackPanel x:Name="spRadioButtons" Orientation="Horizontal" >
+					<TextBlock Text="Presets: " Width="Auto" Height="Auto" Margin="0,-1,0,0"/>
+					<WrapPanel x:Name="spPresets" Orientation="Horizontal" Width="564" >
+						<RadioButton x:Name="rbnHighlightYellow" Margin="16,0,0,6" Content="Highlight Yellow" Checked="rbnHighlightYellow_Checked"/>
+						<RadioButton x:Name="rbnReverse" Margin="16,0,0,6" Content="White on Blue" Checked="rbnReverse_Checked"/>
+						<RadioButton x:Name="rbnGreen" Margin="16,0,0,6" Content="Green" Checked="rbnGreen_Checked"/>
+						<RadioButton x:Name="rbnDarkTheme" Margin="16,0,0,6" Content="Dark Theme" Checked="rbnDarkTheme_Checked" />
+						<RadioButton x:Name="rbnBlues" Margin="16,0,0,6" Content="Blues" Checked="rbnBlues_Checked" />
+						<RadioButton x:Name="rbnVSRename" Margin="16,0,0,6" Content="VS Rename" Checked="rbnVSRename_Checked" />
+						<RadioButton x:Name="rbnMinDistances" Margin="16,0,0,6" Content="Min Distances" Checked="rbnMinDistances_Checked" Loaded="rbnMinDistances_Loaded" />
+						<RadioButton x:Name="rbnSameBrightness" Margin="16,0,0,6" Content="Same Brightness" Checked="rbnSameBrightness_Checked" />
+						<RadioButton x:Name="rbnWideLightness" Margin="16,0,0,6" Content="Wide Lightness" Checked="rbnWideLightness_Checked" />
+						<RadioButton x:Name="rbnH1" Margin="16,0,0,6" Content="H1" Checked="rbnH1_Checked" />
+						<RadioButton x:Name="rbnH2" Margin="16,0,0,6" Content="H2" Checked="rbnH2_Checked" />
+						<RadioButton x:Name="rbnGray" Margin="16,0,0,6" Content="Gray" Checked="rbnGray_Checked" />
+						<RadioButton x:Name="rbnTeal" Margin="16,0,0,6" Content="Teal" Checked="rbnTeal_Checked" />
+						<RadioButton x:Name="rbnBlackOnWhite" Margin="16,0,0,6" Content="Black on White" Checked="rbnBlackOnWhite_Checked"/>
+						<RadioButton x:Name="rbnWhiteOnBlack" Margin="16,0,0,6" Content="White on Black" Checked="rbnWhiteOnBlack_Checked"/>
+						<RadioButton x:Name="rbnWhiteOnRed" Margin="16,0,0,6" Content="White on Red" Checked="rbnWhiteOnRed_Checked"/>
+						<RadioButton x:Name="rbnBlueOnRed" Margin="16,0,0,6" Content="Blue on Red" Checked="rbnBlueOnRed_Checked"/>
+						<RadioButton x:Name="rbnPinkOnRed" Margin="16,0,0,6" Content="Pink on Red" Checked="rbnPinkOnRed_Checked"/>
+					</WrapPanel>
+				</StackPanel>
+
+				<Canvas Height="593">
+					<Viewbox Height="33" Canvas.Left="122" Canvas.Top="98">
+						<Canvas Width="472" Height="33" >
+							<Rectangle x:Name="barHue" Width="472" Height="33" >
+								<Rectangle.Fill>
+									<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+										<GradientStop Color="#FFE90A04" Offset="0" />
+										<GradientStop Color="#FFF16303" Offset="0" />
+										<GradientStop Color="#FFF8BD03" Offset="0" />
+										<GradientStop Color="#FFF8BD03" Offset="0" />
+										<GradientStop Color="#FFF16303" Offset="0.067796610169491525" />
+										<GradientStop Color="#FFF8BD03" Offset="0.13559322033898305" />
+										<GradientStop Color="#FFFEF902" Offset="0.18220338983050846" />
+										<GradientStop Color="#FFFBFD03" Offset="0.1864406779661017" />
+										<GradientStop Color="#FF6AFE39" Offset="0.288135593220339" />
+										<GradientStop Color="#FF06FE08" Offset="0.33050847457627119" />
+										<GradientStop Color="#FF00FE09" Offset="0.336864406779661" />
+										<GradientStop Color="#FF02FF59" Offset="0.40466101694915252" />
+										<GradientStop Color="#FF00FFF2" Offset="0.4978813559322034" />
+										<GradientStop Color="#FF00FCF5" Offset="0.5021186440677966" />
+										<GradientStop Color="#FF003CFE" Offset="0.63771186440677963" />
+										<GradientStop Color="#FF2B02FF" Offset="0.68855932203389836" />
+										<GradientStop Color="#FF4400FF" Offset="0.70550847457627119" />
+										<GradientStop Color="#FFFD00FC" Offset="0.81991525423728817" />
+										<GradientStop Color="#FFFE000B" Offset="1" />
+									</LinearGradientBrush>
+								</Rectangle.Fill>
+							</Rectangle>
+							<Polygon Points="0,0 472,0 472,33 0,33" Fill="{x:Null}" Stroke="#FFD9D9D9" StrokeThickness="1" />
+						</Canvas>
+					</Viewbox>
+
+					<Viewbox x:Name="BrightnessScale" Height="33" Canvas.Left="122" Canvas.Top="491">
+						<Canvas Width="472" Height="33">
+							<Rectangle Width="472" Height="33" Canvas.Left="0" Canvas.Top="0">
+								<Rectangle.Fill>
+									<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+										<GradientStop Color="#FF000000" Offset="0" />
+										<GradientStop Color="#FFFFFFFF" Offset="1" />
+									</LinearGradientBrush>
+								</Rectangle.Fill>
+							</Rectangle>
+							<Polygon Points="0,0 472,0 472,33 0,33" Fill="{x:Null}" Stroke="#FFD9D9D9" StrokeThickness="1" />
+						</Canvas>
+					</Viewbox>
+
+					<Viewbox x:Name="Saturation" Height="33" Canvas.Left="122" Canvas.Top="292">
+						<Canvas Width="472" Height="33">
+							<Rectangle Width="472" Height="33" Canvas.Left="0" Canvas.Top="0">
+								<Rectangle.Fill>
+									<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+										<GradientStop x:Name="clrSaturationStart" Color="#FFFFFFFF" Offset="0" />
+										<GradientStop x:Name="clrSaturationEnd" Color="#FF0000FF" Offset="1" />
+									</LinearGradientBrush>
+								</Rectangle.Fill>
+							</Rectangle>
+							<Polygon Points="0,0 472,0 472,33 0,33" Fill="{x:Null}" Stroke="#FFD9D9D9" StrokeThickness="1" />
+						</Canvas>
+					</Viewbox>
+					<TextBlock Text="Hue:" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="63" Canvas.Top="68" FontSize="20"/>
+					<TextBlock Text="Saturation:" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Top="264" FontSize="20" Canvas.Left="8"/>
+					<local:HighlightTextPicker x:Name="ctlBrightnessHighlightText" Height="78" Canvas.Left="66" Width="578" Canvas.Top="424" TextChanged="ctlBrightnessHighlightText_TextChanged" HighlightChanged="ctlBrightnessHighlightText_HighlightChanged"/>
+					<local:HighlightTextPicker x:Name="ctlHueHighlightText" Height="78" Canvas.Left="66" Width="578" Canvas.Top="30" HighlightChanged="ctlHueHighlightText_HighlightChanged" TextChanged="ctlHueHighlightText_TextChanged" BeforeHighlightChanged="ctlHueHighlightText_BeforeHighlightChanged" BeforeTextChanged="ctlHueHighlightText_BeforeTextChanged" AfterHighlightChanged="ctlHueHighlightText_AfterHighlightChanged" AfterTextChanged="ctlHueHighlightText_AfterTextChanged"/>
+					<local:HighlightTextPicker x:Name="ctlSaturationHighlightText" Height="78" Canvas.Left="66" Width="578" Canvas.Top="224" HighlightChanged="ctlSaturationHighlightText_HighlightChanged" TextChanged="ctlSaturationHighlightText_TextChanged"/>
+					<local:ForegroundBackgroundPicker x:Name="ctlBrightnessBackgroundForeground" Height="78" Canvas.Left="66" Width="578" Canvas.Top="516" ForegroundChanged="ctlBrightnessBackgroundForeground_ForegroundChanged" BackgroundChanged="ctlBrightnessBackgroundForeground_BackgroundChanged"/>
+					<local:ForegroundBackgroundPicker x:Name="ctlHueBackgroundForeground" Height="78" Canvas.Left="66" Width="578" Canvas.Top="121" BackgroundChanged="ctlHueBackgroundForeground_BackgroundChanged" ForegroundChanged="ctlHueBackgroundForeground_ForegroundChanged" AfterBackgroundChanged="ctlHueBackgroundForeground_AfterBackgroundChanged" AfterForegroundChanged="ctlHueBackgroundForeground_AfterForegroundChanged" BeforeBackgroundChanged="ctlHueBackgroundForeground_BeforeBackgroundChanged" BeforeForegroundChanged="ctlHueBackgroundForeground_BeforeForegroundChanged"/>
+					<local:ForegroundBackgroundPicker x:Name="ctlSaturationBackgroundForeground" Height="78" Canvas.Left="66" Width="578" Canvas.Top="316" BackgroundChanged="ctlSaturationBackgroundForeground_BackgroundChanged" ForegroundChanged="ctlSaturationBackgroundForeground_ForegroundChanged"/>
+					<TextBlock Text="Lightness:" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="16" Canvas.Top="462" FontSize="20"/>
+					<TextBlock Text="100%" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="597" Canvas.Top="300" FontSize="12"/>
+					<TextBlock Text="100%" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="597" Canvas.Top="498" FontSize="12"/>
+					<TextBlock Text="0%" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="102" Canvas.Top="300" FontSize="12"/>
+					<TextBlock Text="0%" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="102" Canvas.Top="498" FontSize="12"/>
+
+				</Canvas>
+
 			</StackPanel>
+			<StackPanel Margin="40,0,0,0" Height="Auto" Width="Auto">
+				<StackPanel x:Name="spnOptions" Orientation="Horizontal">
+					<CheckBox x:Name="chkShowHighlighting" Margin="12,8,0,0" Checked="chkShowHighlighting_Checked" Unchecked="chkShowHighlighting_Unchecked" IsChecked="True">
+						Show Highlighting
+					</CheckBox>
 
-			<Canvas Height="492">
-				<Viewbox Height="33" Canvas.Left="105" Canvas.Top="98">
-					<Canvas Width="472" Height="33">
-						<Rectangle x:Name="barHue" Width="472" Height="33" Canvas.Left="0" Canvas.Top="0">
-							<Rectangle.Fill>
-								<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-									<GradientStop Color="#FFE90A04" Offset="0" />
-									<GradientStop Color="#FFF16303" Offset="0.067796610169491525" />
-									<GradientStop Color="#FFF8BD03" Offset="0.13559322033898305" />
-									<GradientStop Color="#FFFEF902" Offset="0.18220338983050846" />
-									<GradientStop Color="#FFFBFD03" Offset="0.1864406779661017" />
-									<GradientStop Color="#FF6AFE39" Offset="0.288135593220339" />
-									<GradientStop Color="#FF06FE08" Offset="0.33050847457627119" />
-									<GradientStop Color="#FF00FE09" Offset="0.336864406779661" />
-									<GradientStop Color="#FF02FF59" Offset="0.40466101694915252" />
-									<GradientStop Color="#FF00FFF2" Offset="0.4978813559322034" />
-									<GradientStop Color="#FF00FCF5" Offset="0.5021186440677966" />
-									<GradientStop Color="#FF003CFE" Offset="0.63771186440677963" />
-									<GradientStop Color="#FF2B02FF" Offset="0.68855932203389836" />
-									<GradientStop Color="#FF4400FF" Offset="0.70550847457627119" />
-									<GradientStop Color="#FFFD00FC" Offset="0.81991525423728817" />
-									<GradientStop Color="#FFFE000B" Offset="1" />
-								</LinearGradientBrush>
-							</Rectangle.Fill>
-						</Rectangle>
-						<Polygon Points="0,0 472,0 472,33 0,33" Fill="{x:Null}" Stroke="#FFD9D9D9" StrokeThickness="1" />
-					</Canvas>
-				</Viewbox>
+					<CheckBox x:Name="chkShowForegroundText" Margin="16,8,0,0" Checked="chkShowForegroundText_Checked" Unchecked="chkShowForegroundText_Unchecked" IsChecked="True">
+						Show Foreground Text
+					</CheckBox>
 
-				<Viewbox x:Name="BrightnessScale" Height="33" Canvas.Left="105" Canvas.Top="491">
-					<Canvas Width="472" Height="33">
-						<Rectangle Width="472" Height="33" Canvas.Left="0" Canvas.Top="0">
-							<Rectangle.Fill>
-								<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-									<GradientStop Color="#FF000000" Offset="0" />
-									<GradientStop Color="#FFFFFFFF" Offset="1" />
-								</LinearGradientBrush>
-							</Rectangle.Fill>
-						</Rectangle>
-						<Polygon Points="0,0 472,0 472,33 0,33" Fill="{x:Null}" Stroke="#FFD9D9D9" StrokeThickness="1" />
-					</Canvas>
-				</Viewbox>
+					<CheckBox x:Name="chkShowPerceivedBrightness" Margin="16,8,0,0" Checked="chkShowPerceivedBrightness_Checked" Unchecked="chkShowPerceivedBrightness_Unchecked" IsChecked="True">
+						Show Perceived Brightness
+					</CheckBox>
 
-				<Viewbox x:Name="Saturation" Height="33" Canvas.Left="105" Canvas.Top="292">
-					<Canvas Width="472" Height="33">
-						<Rectangle Width="472" Height="33" Canvas.Left="0" Canvas.Top="0">
-							<Rectangle.Fill>
-								<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-									<GradientStop Color="#FFFFFFFF" Offset="0" />
-									<GradientStop Color="#FF0000FF" Offset="1" />
-								</LinearGradientBrush>
-							</Rectangle.Fill>
-						</Rectangle>
-						<Polygon Points="0,0 472,0 472,33 0,33" Fill="{x:Null}" Stroke="#FFD9D9D9" StrokeThickness="1" />
-					</Canvas>
-				</Viewbox>
-				<TextBlock Text="Hue:" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="54" Canvas.Top="98" FontSize="20"/>
-				<TextBlock Text="Saturation:" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="-1" Canvas.Top="294" FontSize="20"/>
-				<local:HighlightTextPicker x:Name="ctlBrightnessHighlightText" Height="78" Canvas.Left="49" Width="578" Canvas.Top="424" TextChanged="ctlBrightnessHighlightText_TextChanged" HighlightChanged="ctlBrightnessHighlightText_HighlightChanged"/>
-				<local:HighlightTextPicker x:Name="ctlHueHighlightText" Height="78" Canvas.Left="49" Width="578" Canvas.Top="30" HighlightChanged="ctlHueHighlightText_HighlightChanged" TextChanged="ctlHueHighlightText_TextChanged" BeforeHighlightChanged="ctlHueHighlightText_BeforeHighlightChanged" BeforeTextChanged="ctlHueHighlightText_BeforeTextChanged" AfterHighlightChanged="ctlHueHighlightText_AfterHighlightChanged" AfterTextChanged="ctlHueHighlightText_AfterTextChanged"/>
-				<local:HighlightTextPicker x:Name="ctlSaturationHighlightText" Height="78" Canvas.Left="49" Width="578" Canvas.Top="224" HighlightChanged="ctlSaturationHighlightText_HighlightChanged" TextChanged="ctlSaturationHighlightText_TextChanged"/>
-				<local:ForegroundBackgroundPicker x:Name="ctlBrightnessBackgroundForeground" Height="78" Canvas.Left="49" Width="578" Canvas.Top="516" ForegroundChanged="ctlBrightnessBackgroundForeground_ForegroundChanged" BackgroundChanged="ctlBrightnessBackgroundForeground_BackgroundChanged"/>
-				<local:ForegroundBackgroundPicker x:Name="ctlHueBackgroundForeground" Height="78" Canvas.Left="49" Width="578" Canvas.Top="121" BackgroundChanged="ctlHueBackgroundForeground_BackgroundChanged" ForegroundChanged="ctlHueBackgroundForeground_ForegroundChanged" AfterBackgroundChanged="ctlHueBackgroundForeground_AfterBackgroundChanged" AfterForegroundChanged="ctlHueBackgroundForeground_AfterForegroundChanged" BeforeBackgroundChanged="ctlHueBackgroundForeground_BeforeBackgroundChanged" BeforeForegroundChanged="ctlHueBackgroundForeground_BeforeForegroundChanged"/>
-				<local:ForegroundBackgroundPicker x:Name="ctlSaturationBackgroundForeground" Height="78" Canvas.Left="49" Width="578" Canvas.Top="316" BackgroundChanged="ctlSaturationBackgroundForeground_BackgroundChanged" ForegroundChanged="ctlSaturationBackgroundForeground_ForegroundChanged"/>
-				<TextBlock Text="Lightness:" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="7" Canvas.Top="492" FontSize="20"/>
-			</Canvas>
-
-		</StackPanel>
-		<StackPanel Margin="40,0,0,0" >
-			<StackPanel x:Name="spSampleText" Orientation="Horizontal" Margin="4,12,4,4">
-				<StackPanel >
-					<TextBlock Text="Sample Highlighting:" Width="Auto" Height="Auto" Foreground="SlateGray" Margin="10,0,0,2" FontSize="18"/>
-					<Viewbox Width="260" Margin="20,10,22,0" >
-						<Canvas Width="516" Height="173">
-							<Rectangle x:Name="clrBackground" Width="556" Height="187" Fill="Coral" Canvas.Left="-20" Canvas.Top="-15"/>
-							<Polygon x:Name="clrHighlight" Points="180.5,105.5 180.5,156.5 392.5,156.5 392.5,105.5" Fill="#FFFFD94F" Stroke="{x:Null}" />
-							<TextBlock x:Name="clrForegroundColor1" Text="Another way to send " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="0" />
-							<TextBlock x:Name="clrForegroundColor2" Text="information in a presentation " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="51" />
-							<TextBlock x:Name="clrForegroundColor3" Text="is through                      . " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="102" />
-							<TextBlock x:Name="clrHighlightTextColor" Text="highlighting" FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="185" Canvas.Top="102" />
-						</Canvas>
-					</Viewbox>
+					<CheckBox x:Name="chkShowWarnings" Margin="16,8,0,0" Checked="chkShowWarnings_Checked" Unchecked="chkShowWarnings_Unchecked" IsChecked="True">
+						Show Warnings
+					</CheckBox>
 				</StackPanel>
+				<StackPanel x:Name="spSampleText" Orientation="Horizontal" Margin="4,8,4,4">
 
-				<StackPanel >
-					<TextBlock Text="Perceived Brightness:" Width="Auto" Height="Auto" Foreground="SlateGray" Margin="10,0,0,2" FontSize="18"/>
-					<Viewbox Width="260" Margin="20,10,22,0" >
-						<Canvas Width="516" Height="173">
-							<Rectangle x:Name="clrBackgroundGrayscale" Width="556" Height="187" Fill="Coral" Canvas.Left="-20" Canvas.Top="-15"/>
-							<Polygon x:Name="clrHighlightGrayscale" Points="180.5,105.5 180.5,156.5 392.5,156.5 392.5,105.5" Fill="#FFFFD94F" Stroke="{x:Null}" />
-							<TextBlock x:Name="clrForegroundGrayscale1" Text="Another way to send " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="0" />
-							<TextBlock x:Name="clrForegroundGrayscale2" Text="information in a presentation " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="51" />
-							<TextBlock x:Name="clrForegroundGrayscale3" Text="is through                      . " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="102" />
-							<TextBlock x:Name="clrHighlightTextGrayscale" Text="highlighting" FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="185" Canvas.Top="102" />
-						</Canvas>
-					</Viewbox>
+					<StackPanel >
+
+						<TextBlock x:Name="txtSampleHighlighting" Text="Sample Highlighting:" Width="Auto" Height="Auto" Foreground="SlateGray" Margin="10,0,0,2" FontSize="18"/>
+						<Viewbox Width="260" Margin="20,10,22,0" >
+							<Canvas Width="516" Height="173">
+								<Rectangle x:Name="clrBackground" Width="556" Height="187" Fill="Coral" Stroke="Gray" StrokeThickness="0.25" Canvas.Left="-20" Canvas.Top="-15"/>
+								<Polygon x:Name="clrHighlight" Points="180.5,105.5 180.5,156.5 392.5,156.5 392.5,105.5" Fill="#FFFFD94F" Stroke="{x:Null}" />
+								<TextBlock x:Name="clrForegroundColor1" Text="Another way to send " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="0" />
+								<TextBlock x:Name="clrForegroundColor2" Text="information in a presentation " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="51" />
+								<TextBlock x:Name="clrForegroundColor3" Text="is through                      . " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="102" />
+								<TextBlock x:Name="clrHighlightTextColor" Text="highlighting" FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="185" Canvas.Top="102" />
+							</Canvas>
+						</Viewbox>
+					</StackPanel>
+
+					<StackPanel >
+						<TextBlock x:Name="tbPerceivedBrightness" Text="Perceived Brightness:" Width="Auto" Height="Auto" Foreground="SlateGray" Margin="10,0,0,2" FontSize="18"/>
+						<Viewbox x:Name="vbxPerceivedBrightness" Width="260" Margin="20,10,22,0" >
+							<Canvas Width="516" Height="173">
+								<Rectangle x:Name="clrBackgroundGrayscale" Width="556" Height="187" Fill="Coral" Stroke="Gray" StrokeThickness="0.25" Canvas.Left="-20" Canvas.Top="-15"/>
+								<Polygon x:Name="clrHighlightGrayscale" Points="180.5,105.5 180.5,156.5 392.5,156.5 392.5,105.5" Fill="#FFFFD94F" Stroke="{x:Null}" />
+								<TextBlock x:Name="clrForegroundGrayscale1" Text="Another way to send " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="0" />
+								<TextBlock x:Name="clrForegroundGrayscale2" Text="information in a presentation " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="51" />
+								<TextBlock x:Name="clrForegroundGrayscale3" Text="is through                      . " FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="0" Canvas.Top="102" />
+								<TextBlock x:Name="clrHighlightTextGrayscale" Text="highlighting" FontFamily="Calibri" FontSize="43" Foreground="#FF000000" Canvas.Left="185" Canvas.Top="102" />
+							</Canvas>
+						</Viewbox>
+					</StackPanel>
 				</StackPanel>
+				<Canvas Height="394" Width="608">
+					<StackPanel x:Name="spColors" Orientation="Horizontal" Canvas.Left="30" Canvas.Top="491">
+						<TextBlock Text="Background: " Width="Auto" Height="Auto" Foreground="SlateGray"/>
+						<TextBox x:Name="tbxBackground" Margin="0,0,8,0" Text="#FFFFFF" TextChanged="tbxBackground_TextChanged" GotFocus="tbxBackground_GotFocus"/>
+
+						<TextBlock x:Name="lblForeground" Text="Foreground: " Width="Auto" Height="Auto" Foreground="SlateGray"/>
+						<TextBox x:Name="tbxForeground" Margin="0,0,8,0" Text="#000000" TextChanged="tbxForeground_TextChanged" GotFocus="tbxForeground_GotFocus"/>
+
+						<TextBlock x:Name="lblHighlight" Text="Highlight: " Width="Auto" Height="Auto" Foreground="SlateGray"/>
+						<TextBox x:Name="tbxHighlight" Margin="0,0,8,0" Text="#000000" TextChanged="tbxHighlight_TextChanged" GotFocus="tbxHighlight_GotFocus"/>
+
+						<TextBlock x:Name="lblHighlightText" Text="Highlight Text: " Width="Auto" Height="Auto" Foreground="SlateGray"/>
+						<TextBox x:Name="tbxHighlightText" Margin="0,0,8,0" Text="#000000" TextChanged="tbxHighlightText_TextChanged" GotFocus="tbxHighlightText_GotFocus"/>
+					</StackPanel>
+
+					<Canvas x:Name="cvsDistanceAcrossPBS">
+						<TextBlock Text="Distances (Across Perceived Brightness):" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="10" Canvas.Top="10" FontSize="20"/>
+						<local:HighlightTextPicker x:Name="ctlPerceivedBrightnessHighlightText" Height="78" Canvas.Left="10" Width="578" Canvas.Top="45" TextChanged="ctlBrightnessHighlightText_TextChanged" HighlightChanged="ctlBrightnessHighlightText_HighlightChanged" DraggableControls="False" InnerPadding="12"/>
+						<local:ForegroundBackgroundPicker x:Name="ctlPerceivedBrightnessBackgroundForeground" Height="75" Canvas.Left="10" Width="578" Canvas.Top="156" ForegroundChanged="ctlBrightnessBackgroundForeground_ForegroundChanged" BackgroundChanged="ctlBrightnessBackgroundForeground_BackgroundChanged" DraggableControls="False" InnerPadding="12"/>
+						<Viewbox x:Name="BrightnessScale_Copy" Height="33" Canvas.Left="66" Canvas.Top="123">
+							<Canvas Width="472" Height="33">
+								<Polygon Points="0,0 472,0 472,33 0,33" Fill="{x:Null}" Stroke="#FFD9D9D9" StrokeThickness="1" />
+								<Rectangle Width="472" Height="33" Canvas.Left="0" Canvas.Top="0">
+									<Rectangle.Fill>
+										<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+											<GradientStop Color="#FF000000" Offset="0" />
+											<GradientStop Color="#FFFFFFFF" Offset="1" />
+										</LinearGradientBrush>
+									</Rectangle.Fill>
+								</Rectangle>
+							</Canvas>
+						</Viewbox>
+					</Canvas>
+
+					<Grid x:Name="grdWcagCompliance" Height="Auto" Width="Auto" Canvas.Left="10" Canvas.Top="323">
+
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<TextBlock Text="WCAG 2.0 Compliance" Width="Auto" Foreground="White" Background="#FF5B9BD5" Height="Auto"                              Margin="1,1,0,1" Padding="6,1,6,1"/>
+						<TextBlock Text="Background/Foreground" Width="Auto" Height="Auto" Foreground="White" Background="#FF5B9BD5" Grid.Column="1"            Margin="1,1,0,1" Padding="6,1,8,1"/>
+						<TextBlock x:Name="wcag1" Text="Highlight/Text" Width="Auto" Height="Auto" Foreground="White" Background="#FF5B9BD5" Grid.Column="2"                   Margin="1,1,0,1" Padding="6,1,8,1"/>
+						<TextBlock Text="Contrast Ratio" Width="Auto" Height="Auto" Grid.Row="1" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
+						<TextBlock Width="Auto" Height="Auto" Grid.Row="1" Grid.Column="1" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
+						<TextBlock x:Name="wcag2" Width="Auto" Height="Auto" Grid.Row="1" Grid.Column="2" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
+						<TextBlock x:Name="tbBackForeContrastRatio" HorizontalAlignment="Center" Text="1:1" Width="Auto" Height="Auto" Grid.Row="1" Grid.Column="1" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
+						<TextBlock x:Name="tbHighTextContrastRatio" HorizontalAlignment="Center" Text="1:1" Width="Auto" Height="Auto" Grid.Row="1" Grid.Column="2" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
+						<TextBlock Text="1.4.3 Contrast (Minimum, Level AA)" Width="Auto" Height="Auto" Grid.Row="2" Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,2,0,1" Padding="6,1,8,1"/>
+						<TextBlock Text="Large Fonts (18pt+)" Width="Auto" Height="Auto" Grid.Row="3"                 Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,0,0,3" Padding="17,1,8,1"/>
+						<TextBlock Text="1.4.6 Contrast (Minimum, Level AAA)" Width="Auto" Height="Auto" Grid.Row="4" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
+
+						<TextBlock Text="Large Fonts (18pt+)" Width="Auto" Height="Auto" Grid.Row="5"                 Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,0,0,3" Padding="17,1,8,1"/>
+
+						<TextBlock x:Name="tbBackForeWcagAACompliance" Text="" Width="Auto" Height="Auto" Grid.Row="2" Grid.Column="1" Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,2,0,1" Padding="6,1,8,1"/>
+						<TextBlock x:Name="tbHighTextWcagAACompliance" Text="" Width="Auto" Height="Auto" Grid.Row="2" Grid.Column="2" Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,2,0,1" Padding="6,1,8,1"/>
+						<TextBlock x:Name="tbBackForeWcagAALargeFontCompliance" Text="" Width="Auto" Height="Auto" Grid.Row="3" Grid.Column="1" Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,0,0,3" Padding="17,1,8,1"/>
+						<TextBlock x:Name="tbHighTextWcagAALargeFontCompliance" Text="" Width="Auto" Height="Auto" Grid.Row="3" Grid.Column="2" Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,0,0,3" Padding="17,1,8,1"/>
+
+						<TextBlock x:Name="tbBackForeWcagAAACompliance" Text="" Width="Auto" Height="Auto" Grid.Row="4" Grid.Column="1" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
+						<TextBlock x:Name="tbHighTextWcagAAACompliance" Text="" Width="Auto" Height="Auto" Grid.Row="4" Grid.Column="2" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
+						<TextBlock x:Name="tbBackForeWcagAAALargeFontCompliance" Text="" Width="Auto" Height="Auto" Grid.Row="5" Grid.Column="1" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,0,0,3" Padding="17,1,8,1"/>
+						<TextBlock x:Name="tbHighTextWcagAAALargeFontCompliance" Text="" Width="Auto" Height="Auto" Grid.Row="5" Grid.Column="2" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,0,0,3" Padding="17,1,8,1"/>
+
+						<Viewbox x:Name="icoBackForeAaNo" Height="16" Grid.Column="1" Grid.Row="2">
+							<Canvas Width="344" Height="344">
+								<Path Fill="#FFFF0000">
+									<Path.Data>
+										<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoBackForeAaYes" Height="16" Grid.Column="1" Grid.Row="2">
+							<Canvas Width="447" Height="350">
+								<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
+									<Path.Data>
+										<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoBackForeAaLargeNo" Height="16" Grid.Column="1" Grid.Row="3">
+							<Canvas Width="344" Height="344">
+								<Path Fill="#FFFF0000">
+									<Path.Data>
+										<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoBackForeAaLargeYes" Height="16" Grid.Column="1" Grid.Row="3">
+							<Canvas Width="447" Height="350">
+								<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
+									<Path.Data>
+										<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoBackForeAaaNo" Height="16" Grid.Column="1" Grid.Row="4">
+							<Canvas Width="344" Height="344">
+								<Path Fill="#FFFF0000">
+									<Path.Data>
+										<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoBackForeAaaYes" Height="16" Grid.Column="1" Grid.Row="4">
+							<Canvas Width="447" Height="350">
+								<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
+									<Path.Data>
+										<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoBackForeAaaLargeNo" Height="16" Grid.Column="1" Grid.Row="5">
+							<Canvas Width="344" Height="344">
+								<Path Fill="#FFFF0000">
+									<Path.Data>
+										<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoBackForeAaaLargeYes" Height="16" Grid.Column="1" Grid.Row="5">
+							<Canvas Width="447" Height="350">
+								<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
+									<Path.Data>
+										<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoHighTextAaNo" Height="16" Grid.Column="2" Grid.Row="2">
+							<Canvas Width="344" Height="344">
+								<Path Fill="#FFFF0000">
+									<Path.Data>
+										<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoHighTextAaYes" Height="16" Grid.Column="2" Grid.Row="2">
+							<Canvas Width="447" Height="350">
+								<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
+									<Path.Data>
+										<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoHighTextAaLargeNo" Height="16" Grid.Column="2" Grid.Row="3">
+							<Canvas Width="344" Height="344">
+								<Path Fill="#FFFF0000">
+									<Path.Data>
+										<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoHighTextAaLargeYes" Height="16" Grid.Column="2" Grid.Row="3">
+							<Canvas Width="447" Height="350">
+								<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
+									<Path.Data>
+										<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoHighTextAaaNo" Height="16" Grid.Column="2" Grid.Row="4">
+							<Canvas Width="344" Height="344">
+								<Path Fill="#FFFF0000">
+									<Path.Data>
+										<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoHighTextAaaYes" Height="16" Grid.Column="2" Grid.Row="4">
+							<Canvas Width="447" Height="350">
+								<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
+									<Path.Data>
+										<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoHighTextAaaLargeNo" Height="16" Grid.Column="2" Grid.Row="5">
+							<Canvas Width="344" Height="344">
+								<Path Fill="#FFFF0000">
+									<Path.Data>
+										<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+						<Viewbox x:Name="icoHighTextAaaLargeYes" Height="16" Grid.Column="2" Grid.Row="5">
+							<Canvas Width="447" Height="350">
+								<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
+									<Path.Data>
+										<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
+									</Path.Data>
+								</Path>
+							</Canvas>
+						</Viewbox>
+
+					</Grid>
+
+					<TextBlock x:Name="tbIssues" Text="Issues:" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="10" Canvas.Top="217" FontSize="20"/>
+					<StackPanel x:Name="spDistances" Canvas.Left="30" Canvas.Top="247"  >
+						<TextBlock x:Name="tbDistanceBackgroundToForeground" Text="" Width="Auto" Height="Auto" Visibility="Collapsed" FontSize="12"/>
+						<TextBlock x:Name="tbDistanceBackgroundToHighlight" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"  FontSize="12"/>
+						<TextBlock x:Name="tbDistanceHighlightToText" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"        FontSize="12"/>
+						<TextBlock x:Name="tbBackgroundSaturationWarning" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"    FontSize="12"/>
+						<TextBlock x:Name="tbForegroundSaturationWarning" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"    FontSize="12"/>
+						<TextBlock x:Name="tbHighlightSaturationWarning" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"     FontSize="12"/>
+						<TextBlock x:Name="tbTextSaturationWarning" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"          FontSize="12"/>
+						<TextBlock x:Name="tbBackForeWCAGWarningAALarge" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"     FontSize="12"/>
+						<TextBlock x:Name="tbBackForeWCAGWarningAA" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"          FontSize="12"/>
+						<TextBlock x:Name="tbBackForeWCAGWarningAAALarge" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"    FontSize="12"/>
+						<TextBlock x:Name="tbBackForeWCAGWarningAAA" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"         FontSize="12"/>
+						<TextBlock x:Name="tbHighTextWCAGWarningAALarge" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"     FontSize="12"/>
+						<TextBlock x:Name="tbHighTextWCAGWarningAA" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"          FontSize="12"/>
+						<TextBlock x:Name="tbHighTextWCAGWarningAAALarge" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"    FontSize="12"/>
+						<TextBlock x:Name="tbHighTextWCAGWarningAAA" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"         FontSize="12"/>
+
+					</StackPanel>
+					<TextBlock Text="Color Values:" Width="205" Height="Auto" Foreground="SlateGray" Canvas.Left="10" Canvas.Top="451" FontSize="20"/>
+				</Canvas>
 			</StackPanel>
-			<Canvas Height="394" Width="608">
-				<StackPanel x:Name="spColors" Orientation="Horizontal" Canvas.Left="30" Canvas.Top="491" >
-					<TextBlock Text="Background: " Width="Auto" Height="Auto" Foreground="SlateGray"/>
-					<TextBox x:Name="tbxBackground" Margin="0,0,8,0" Text="#FFFFFF" TextChanged="tbxBackground_TextChanged" GotFocus="tbxBackground_GotFocus"/>
-
-					<TextBlock Text="Foreground: " Width="Auto" Height="Auto" Foreground="SlateGray"/>
-					<TextBox x:Name="tbxForeground" Margin="0,0,8,0" Text="#000000" TextChanged="tbxForeground_TextChanged" GotFocus="tbxForeground_GotFocus"/>
-
-					<TextBlock Text="Highlight: " Width="Auto" Height="Auto" Foreground="SlateGray"/>
-					<TextBox x:Name="tbxHighlight" Margin="0,0,8,0" Text="#000000" TextChanged="tbxHighlight_TextChanged" GotFocus="tbxHighlight_GotFocus"/>
-
-					<TextBlock Text="Highlight Text: " Width="Auto" Height="Auto" Foreground="SlateGray"/>
-					<TextBox x:Name="tbxHighlightText" Margin="0,0,8,0" Text="#000000" TextChanged="tbxHighlightText_TextChanged" GotFocus="tbxHighlightText_GotFocus"/>
-				</StackPanel>
-				<Viewbox x:Name="BrightnessScale_Copy" Height="33" Canvas.Left="66" Canvas.Top="123">
-					<Canvas Width="472" Height="33">
-						<Polygon Points="0,0 472,0 472,33 0,33" Fill="{x:Null}" Stroke="#FFD9D9D9" StrokeThickness="1" />
-						<Rectangle Width="472" Height="33" Canvas.Left="0" Canvas.Top="0">
-							<Rectangle.Fill>
-								<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-									<GradientStop Color="#FF000000" Offset="0" />
-									<GradientStop Color="#FFFFFFFF" Offset="1" />
-								</LinearGradientBrush>
-							</Rectangle.Fill>
-						</Rectangle>
-					</Canvas>
-				</Viewbox>
-				<TextBlock Text="Distances (Across Perceived Brightness):" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="10" Canvas.Top="10" FontSize="20"/>
-				<local:HighlightTextPicker x:Name="ctlPerceivedBrightnessHighlightText" Height="78" Canvas.Left="10" Width="578" Canvas.Top="45" TextChanged="ctlBrightnessHighlightText_TextChanged" HighlightChanged="ctlBrightnessHighlightText_HighlightChanged" DraggableControls="False" InnerPadding="12"/>
-				<local:ForegroundBackgroundPicker x:Name="ctlPerceivedBrightnessBackgroundForeground" Height="75" Canvas.Left="10" Width="578" Canvas.Top="156" ForegroundChanged="ctlBrightnessBackgroundForeground_ForegroundChanged" BackgroundChanged="ctlBrightnessBackgroundForeground_BackgroundChanged" DraggableControls="False" InnerPadding="12"/>
-
-				<Grid x:Name="grdWcagCompliance" Height="Auto" Width="Auto" Canvas.Left="10" Canvas.Top="323">
-
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition Width="Auto"/>
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-					</Grid.RowDefinitions>
-					<TextBlock Text="WCAG 2.0 Compliance" Width="Auto" Foreground="White" Background="#FF5B9BD5" Height="Auto"                              Margin="1,1,0,1" Padding="6,1,6,1"/>
-					<TextBlock Text="Background/Foreground" Width="Auto" Height="Auto" Foreground="White" Background="#FF5B9BD5" Grid.Column="1"            Margin="1,1,0,1" Padding="6,1,8,1"/>
-					<TextBlock Text="Highlight/Text" Width="Auto" Height="Auto" Foreground="White" Background="#FF5B9BD5" Grid.Column="2"                   Margin="1,1,0,1" Padding="6,1,8,1"/>
-					<TextBlock Text="Contrast Ratio" Width="Auto" Height="Auto" Grid.Row="1" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
-					<TextBlock Width="Auto" Height="Auto" Grid.Row="1" Grid.Column="1" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
-					<TextBlock Width="Auto" Height="Auto" Grid.Row="1" Grid.Column="2" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
-					<TextBlock x:Name="tbBackForeContrastRatio" HorizontalAlignment="Center" Text="1:1" Width="Auto" Height="Auto" Grid.Row="1" Grid.Column="1" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
-					<TextBlock x:Name="tbHighTextContrastRatio" HorizontalAlignment="Center" Text="1:1" Width="Auto" Height="Auto" Grid.Row="1" Grid.Column="2" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
-					<TextBlock Text="1.4.3 Contrast (Minimum, Level AA)" Width="Auto" Height="Auto" Grid.Row="2" Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,2,0,1" Padding="6,1,8,1"/>
-					<TextBlock Text="Large Fonts (18pt+)" Width="Auto" Height="Auto" Grid.Row="3"                 Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,0,0,3" Padding="17,1,8,1"/>
-					<TextBlock Text="1.4.6 Contrast (Minimum, Level AAA)" Width="Auto" Height="Auto" Grid.Row="4" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
-
-					<TextBlock Text="Large Fonts (18pt+)" Width="Auto" Height="Auto" Grid.Row="5"                 Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,0,0,3" Padding="17,1,8,1"/>
-
-					<TextBlock x:Name="tbBackForeWcagAACompliance" Text="" Width="Auto" Height="Auto" Grid.Row="2" Grid.Column="1" Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,2,0,1" Padding="6,1,8,1"/>
-					<TextBlock x:Name="tbHighTextWcagAACompliance" Text="" Width="Auto" Height="Auto" Grid.Row="2" Grid.Column="2" Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,2,0,1" Padding="6,1,8,1"/>
-					<TextBlock x:Name="tbBackForeWcagAALargeFontCompliance" Text="" Width="Auto" Height="Auto" Grid.Row="3" Grid.Column="1" Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,0,0,3" Padding="17,1,8,1"/>
-					<TextBlock x:Name="tbHighTextWcagAALargeFontCompliance" Text="" Width="Auto" Height="Auto" Grid.Row="3" Grid.Column="2" Foreground="#FF175F96" Background="#FFEAEFF7" Margin="1,0,0,3" Padding="17,1,8,1"/>
-
-					<TextBlock x:Name="tbBackForeWcagAAACompliance" Text="" Width="Auto" Height="Auto" Grid.Row="4" Grid.Column="1" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
-					<TextBlock x:Name="tbHighTextWcagAAACompliance" Text="" Width="Auto" Height="Auto" Grid.Row="4" Grid.Column="2" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,1,0,1" Padding="6,1,8,1"/>
-					<TextBlock x:Name="tbBackForeWcagAAALargeFontCompliance" Text="" Width="Auto" Height="Auto" Grid.Row="5" Grid.Column="1" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,0,0,3" Padding="17,1,8,1"/>
-					<TextBlock x:Name="tbHighTextWcagAAALargeFontCompliance" Text="" Width="Auto" Height="Auto" Grid.Row="5" Grid.Column="2" Foreground="#FF053F6B" Background="#FFDCE7F7" Margin="1,0,0,3" Padding="17,1,8,1"/>
-
-					<Viewbox x:Name="icoBackForeAaNo" Height="16" Grid.Column="1" Grid.Row="2">
-						<Canvas Width="344" Height="344">
-							<Path Fill="#FFFF0000">
-								<Path.Data>
-									<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoBackForeAaYes" Height="16" Grid.Column="1" Grid.Row="2">
-						<Canvas Width="447" Height="350">
-							<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
-								<Path.Data>
-									<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoBackForeAaLargeNo" Height="16" Grid.Column="1" Grid.Row="3">
-						<Canvas Width="344" Height="344">
-							<Path Fill="#FFFF0000">
-								<Path.Data>
-									<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoBackForeAaLargeYes" Height="16" Grid.Column="1" Grid.Row="3">
-						<Canvas Width="447" Height="350">
-							<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
-								<Path.Data>
-									<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoBackForeAaaNo" Height="16" Grid.Column="1" Grid.Row="4">
-						<Canvas Width="344" Height="344">
-							<Path Fill="#FFFF0000">
-								<Path.Data>
-									<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoBackForeAaaYes" Height="16" Grid.Column="1" Grid.Row="4">
-						<Canvas Width="447" Height="350">
-							<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
-								<Path.Data>
-									<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoBackForeAaaLargeNo" Height="16" Grid.Column="1" Grid.Row="5">
-						<Canvas Width="344" Height="344">
-							<Path Fill="#FFFF0000">
-								<Path.Data>
-									<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoBackForeAaaLargeYes" Height="16" Grid.Column="1" Grid.Row="5">
-						<Canvas Width="447" Height="350">
-							<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
-								<Path.Data>
-									<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoHighTextAaNo" Height="16" Grid.Column="2" Grid.Row="2">
-						<Canvas Width="344" Height="344">
-							<Path Fill="#FFFF0000">
-								<Path.Data>
-									<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoHighTextAaYes" Height="16" Grid.Column="2" Grid.Row="2">
-						<Canvas Width="447" Height="350">
-							<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
-								<Path.Data>
-									<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoHighTextAaLargeNo" Height="16" Grid.Column="2" Grid.Row="3">
-						<Canvas Width="344" Height="344">
-							<Path Fill="#FFFF0000">
-								<Path.Data>
-									<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoHighTextAaLargeYes" Height="16" Grid.Column="2" Grid.Row="3">
-						<Canvas Width="447" Height="350">
-							<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
-								<Path.Data>
-									<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoHighTextAaaNo" Height="16" Grid.Column="2" Grid.Row="4">
-						<Canvas Width="344" Height="344">
-							<Path Fill="#FFFF0000">
-								<Path.Data>
-									<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoHighTextAaaYes" Height="16" Grid.Column="2" Grid.Row="4">
-						<Canvas Width="447" Height="350">
-							<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
-								<Path.Data>
-									<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoHighTextAaaLargeNo" Height="16" Grid.Column="2" Grid.Row="5">
-						<Canvas Width="344" Height="344">
-							<Path Fill="#FFFF0000">
-								<Path.Data>
-									<PathGeometry Figures="M281.3125,-0.5C285.375,-0.5,289.5,1.0625,292.625,4.1875L337.875,49.4375C344.0625,55.6875,344.0625,65.8125,337.875,72.0625L238.875,171 337.875,270C344.0625,276.25,344.0625,286.375,337.875,292.625L292.625,337.875C286.375,344.0625,276.25,344.0625,270,337.875L171,238.875 72.0625,337.875C65.8125,344.0625,55.6875,344.0625,49.4375,337.875L4.1875,292.625C-2.0625,286.375,-2.0625,276.25,4.1875,270L103.1875,171 4.1875,72.0625C-2.0625,65.8125,-2.0625,55.6875,4.1875,49.4375L49.4375,4.1875C52.5625,1.0625,56.6875,-0.5,60.75,-0.5C64.875,-0.5,68.9375,1.0625,72.0625,4.1875L171,103.1875 270,4.1875C273.125,1.0625,277.1875,-0.5,281.3125,-0.5z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-					<Viewbox x:Name="icoHighTextAaaLargeYes" Height="16" Grid.Column="2" Grid.Row="5">
-						<Canvas Width="447" Height="350">
-							<Path Fill="#FF1B75BC" Stroke="#FF41719C" StrokeThickness="1" StrokeMiterLimit="10">
-								<Path.Data>
-									<PathGeometry Figures="M378.6875,0C382.75,0,386.875,1.5625,390,4.6875L435.3125,49.9375C441.625,56.1875,441.625,66.3125,435.3125,72.5625L214.375,293.125 169.0625,338.375C162.75,344.5625,152.625,344.5625,146.375,338.375L101.0625,293.125 4.75,197C-1.5625,190.75,-1.5625,180.625,4.75,174.375L50.0625,129.125C56.3125,122.875,66.4375,122.875,72.6875,129.125L157.6875,213.9375 367.375,4.6875C370.5,1.5625,374.5625,0,378.6875,0z" />
-								</Path.Data>
-							</Path>
-						</Canvas>
-					</Viewbox>
-
-				</Grid>
-
-				<TextBlock x:Name="tbIssues" Text="Issues:" Width="Auto" Height="Auto" Foreground="SlateGray" Canvas.Left="10" Canvas.Top="217" FontSize="20"/>
-				<StackPanel x:Name="spDistances" Canvas.Left="30" Canvas.Top="247"  >
-					<TextBlock x:Name="tbDistanceBackgroundToForeground" Text="" Width="Auto" Height="Auto" Visibility="Collapsed" FontSize="12"/>
-					<TextBlock x:Name="tbDistanceBackgroundToHighlight" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"  FontSize="12"/>
-					<TextBlock x:Name="tbDistanceHighlightToText" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"        FontSize="12"/>
-					<TextBlock x:Name="tbBackgroundSaturationWarning" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"    FontSize="12"/>
-					<TextBlock x:Name="tbForegroundSaturationWarning" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"    FontSize="12"/>
-					<TextBlock x:Name="tbHighlightSaturationWarning" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"     FontSize="12"/>
-					<TextBlock x:Name="tbTextSaturationWarning" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"          FontSize="12"/>
-					<TextBlock x:Name="tbBackForeWCAGWarningAALarge" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"     FontSize="12"/>
-					<TextBlock x:Name="tbBackForeWCAGWarningAA" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"          FontSize="12"/>
-					<TextBlock x:Name="tbBackForeWCAGWarningAAALarge" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"    FontSize="12"/>
-					<TextBlock x:Name="tbBackForeWCAGWarningAAA" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"         FontSize="12"/>
-					<TextBlock x:Name="tbHighTextWCAGWarningAALarge" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"     FontSize="12"/>
-					<TextBlock x:Name="tbHighTextWCAGWarningAA" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"          FontSize="12"/>
-					<TextBlock x:Name="tbHighTextWCAGWarningAAALarge" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"    FontSize="12"/>
-					<TextBlock x:Name="tbHighTextWCAGWarningAAA" Text="" Width="Auto" Height="Auto" Visibility="Collapsed"         FontSize="12"/>
-					
-				</StackPanel>
-				<TextBlock Text="Color Values:" Width="205" Height="Auto" Foreground="SlateGray" Canvas.Left="10" Canvas.Top="451" FontSize="20"/>
-			</Canvas>
 		</StackPanel>
-
-	</StackPanel>
+	</Viewbox>
 </Window>

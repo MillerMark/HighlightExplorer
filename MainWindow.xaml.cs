@@ -36,6 +36,10 @@ namespace HighlightExplorer
 		bool maintainHighlightBrightness;
 		double lastHighlightBrightness;
 		double foregroundSaturation;
+		bool showingHighlighting;
+		bool showingForegroundText;
+		bool showingWarnings;
+		bool showingPerceivedBrightness;
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -125,14 +129,20 @@ namespace HighlightExplorer
 		{
 			HueSatLight hueSatLight = GetForegroundColor();
 			var newColor = hueSatLight.AsRGB;
-			this.clrForegroundColor1.Foreground = new SolidColorBrush(newColor);
-			this.clrForegroundColor2.Foreground = new SolidColorBrush(newColor);
-			this.clrForegroundColor3.Foreground = new SolidColorBrush(newColor);
+			clrForegroundColor1.Foreground = new SolidColorBrush(newColor);
+			clrForegroundColor2.Foreground = new SolidColorBrush(newColor);
+			clrForegroundColor3.Foreground = new SolidColorBrush(newColor);
 
 			var newGrayScale = hueSatLight.AsGrayScale;
-			this.clrForegroundGrayscale1.Foreground = new SolidColorBrush(newGrayScale);
-			this.clrForegroundGrayscale2.Foreground = new SolidColorBrush(newGrayScale);
-			this.clrForegroundGrayscale3.Foreground = new SolidColorBrush(newGrayScale);
+			clrForegroundGrayscale1.Foreground = new SolidColorBrush(newGrayScale);
+			clrForegroundGrayscale2.Foreground = new SolidColorBrush(newGrayScale);
+			clrForegroundGrayscale3.Foreground = new SolidColorBrush(newGrayScale);
+
+			if (!showingHighlighting)
+			{
+				clrHighlightTextColor.Foreground = new SolidColorBrush(newColor);
+				clrHighlightTextGrayscale.Foreground = new SolidColorBrush(newGrayScale);
+			}
 
 			ctlPerceivedBrightnessBackgroundForeground.ForegroundValue = newGrayScale.GetBrightness();
 			UpdateIssues();
@@ -159,6 +169,13 @@ namespace HighlightExplorer
 
 			ctlPerceivedBrightnessBackgroundForeground.BackgroundValue = newGrayScale.GetBrightness();
 			ctlPerceivedBrightnessHighlightText.BackgroundValue = newGrayScale.GetBrightness();
+
+			if (!showingHighlighting)
+			{
+				clrHighlight.Fill = clrBackground.Fill;
+				clrHighlightGrayscale.Fill = new SolidColorBrush(newGrayScale);
+			}
+
 			UpdateIssues();
 			UpdateColorTextBoxes();
 		}
@@ -192,32 +209,32 @@ namespace HighlightExplorer
 
 		private void UpdateIssues()
 		{
-			var backgroundToForegroundDistance = Math.Abs(ctlPerceivedBrightnessBackgroundForeground.BackgroundValue - ctlPerceivedBrightnessBackgroundForeground.ForegroundValue) * 100;
-			ShowIssue(backgroundToForegroundDistance, 25, "Background and foreground colors should be more distinct.", "Background and foreground colors are close and could be more distinct.", tbDistanceBackgroundToForeground, ctlPerceivedBrightnessBackgroundForeground.tbGrayPercentDistance);
-
-			var highlightDistance = Math.Abs(ctlPerceivedBrightnessBackgroundForeground.BackgroundValue - ctlPerceivedBrightnessHighlightText.HighlightValue) * 100;
-			ShowIssue(highlightDistance, 5, "Background and highlight colors should be more distinct.", "Background and highlight colors are close and could be more distinct.", tbDistanceBackgroundToHighlight, ctlPerceivedBrightnessHighlightText.tbRedPercentDistance);
-
-			var textDistance = Math.Abs(ctlPerceivedBrightnessHighlightText.TextValue - ctlPerceivedBrightnessHighlightText.HighlightValue) * 100;
-			
-			ShowIssue(textDistance, 20, "Text and highlight colors should be more distinct.", "Text and highlight colors are close and could be more distinct.", tbDistanceHighlightToText, ctlPerceivedBrightnessHighlightText.tbBluePercentDistance);
-
 			var backgroundColor = GetBackgroundColor();
 			var foregroundColor = GetForegroundColor();
 			var highlightColor = GetHighlightColor();
 			var textColor = GetTextColor();
+
+			if (showingHighlighting)
+				UpdateHighlightIssues(highlightColor, textColor);
+
 			ShowWcagWarnings(backgroundColor, foregroundColor, highlightColor, textColor);
 
 			double backgroundSaturationLevel = GetSaturationLevel(backgroundColor);
-			double foregroundSaturationLevel = GetSaturationLevel(foregroundColor);
-			double highlightSaturationLevel = GetSaturationLevel(highlightColor);
-			double textSaturationLevel = GetSaturationLevel(textColor);
 
 			ShowSaturationIssue(backgroundSaturationLevel, 0.8, 0.3, tbBackgroundSaturationWarning, "Background appears to be too saturated.", "Background may be too saturated.");
-			ShowSaturationIssue(foregroundSaturationLevel, 0.9, 0.8, tbForegroundSaturationWarning, "Foreground text appears to be too saturated.", "Foreground text may be too saturated.");
-			ShowSaturationIssue(highlightSaturationLevel, 2.0 /* no warning for highlight saturation */, 0.85, tbHighlightSaturationWarning, "", "Highlight color may be too saturated.");
 
-			if (tbDistanceBackgroundToForeground.Visibility == Visibility.Visible ||
+			if (showingForegroundText)
+			{
+				var backgroundToForegroundDistance = Math.Abs(ctlPerceivedBrightnessBackgroundForeground.BackgroundValue - ctlPerceivedBrightnessBackgroundForeground.ForegroundValue) * 100;
+				ShowIssue(backgroundToForegroundDistance, 25, "Background and foreground colors should be more distinct.", "Background and foreground colors are close and could be more distinct.", tbDistanceBackgroundToForeground, ctlPerceivedBrightnessBackgroundForeground.tbGrayPercentDistance);
+
+				double foregroundSaturationLevel = GetSaturationLevel(foregroundColor);
+				ShowSaturationIssue(foregroundSaturationLevel, 0.9, 0.8, tbForegroundSaturationWarning, "Foreground text appears to be too saturated.", "Foreground text may be too saturated.");
+			}
+
+
+			if (showingWarnings &&
+				(tbDistanceBackgroundToForeground.Visibility == Visibility.Visible ||
 				tbDistanceBackgroundToHighlight.Visibility == Visibility.Visible ||
 				tbDistanceHighlightToText.Visibility == Visibility.Visible ||
 				tbBackgroundSaturationWarning.Visibility == Visibility.Visible ||
@@ -230,12 +247,25 @@ namespace HighlightExplorer
 				tbHighTextWCAGWarningAA.Visibility == Visibility.Visible ||
 				tbHighTextWCAGWarningAALarge.Visibility == Visibility.Visible ||
 				tbHighTextWCAGWarningAAA.Visibility == Visibility.Visible ||
-				tbHighTextWCAGWarningAAALarge.Visibility == Visibility.Visible)
+				tbHighTextWCAGWarningAAALarge.Visibility == Visibility.Visible))
 				tbIssues.Visibility = Visibility.Visible;
 			else
 				tbIssues.Visibility = Visibility.Hidden;
 
 			//Title = string.Format("B: {0:0.000}, F: {1:0.000}, Highlight: {2:0.000}, Text: {3:0.000}", backgroundSaturationLevel, foregroundSaturationLevel, highlightSaturationLevel, textSaturationLevel);
+		}
+
+		private void UpdateHighlightIssues(HueSatLight highlightColor, HueSatLight textColor)
+		{
+			var highlightDistance = Math.Abs(ctlPerceivedBrightnessBackgroundForeground.BackgroundValue - ctlPerceivedBrightnessHighlightText.HighlightValue) * 100;
+			ShowIssue(highlightDistance, 5, "Background and highlight colors should be more distinct.", "Background and highlight colors are close and could be more distinct.", tbDistanceBackgroundToHighlight, ctlPerceivedBrightnessHighlightText.tbRedPercentDistance);
+
+			var textDistance = Math.Abs(ctlPerceivedBrightnessHighlightText.TextValue - ctlPerceivedBrightnessHighlightText.HighlightValue) * 100;
+			ShowIssue(textDistance, 20, "Text and highlight colors should be more distinct.", "Text and highlight colors are close and could be more distinct.", tbDistanceHighlightToText, ctlPerceivedBrightnessHighlightText.tbBluePercentDistance);
+
+			double textSaturationLevel = GetSaturationLevel(textColor);
+			double highlightSaturationLevel = GetSaturationLevel(highlightColor);
+			ShowSaturationIssue(highlightSaturationLevel, 2.0 /* no warning for highlight saturation */, 0.85, tbHighlightSaturationWarning, "", "Highlight color may be too saturated.");
 		}
 
 		void ShowBackForeContrastValues(double contrastRatio)
@@ -274,14 +304,17 @@ namespace HighlightExplorer
 				return;
 			double backForeContrastRatio = GetContrastRatio(backgroundColor, foregroundColor);
 			ShowBackForeContrastValues(backForeContrastRatio);
+			tbBackForeContrastRatio.Text = string.Format("{0:0.##} : 1", backForeContrastRatio);
+
 			//ShowContrastRatioWarnings("Background/Foreground", backForeContrastRatio, tbBackForeWCAGWarningAA, tbBackForeWCAGWarningAALarge, tbBackForeWCAGWarningAAA, tbBackForeWCAGWarningAAALarge);
 
-			double highlightTextContrastRatio = GetContrastRatio(highlightColor, textColor);
-			ShowHighTextContrastValues(highlightTextContrastRatio);
-			//ShowContrastRatioWarnings("Highlight/Text", highlightTextContrastRatio, tbHighTextWCAGWarningAA, tbHighTextWCAGWarningAALarge, tbHighTextWCAGWarningAAA, tbHighTextWCAGWarningAAALarge);
-
-			tbBackForeContrastRatio.Text = string.Format("{0:0.##} : 1", backForeContrastRatio);
-			tbHighTextContrastRatio.Text = string.Format("{0:0.##} : 1", highlightTextContrastRatio);
+			if (showingHighlighting)
+			{
+				double highlightTextContrastRatio = GetContrastRatio(highlightColor, textColor);
+				ShowHighTextContrastValues(highlightTextContrastRatio);
+				tbHighTextContrastRatio.Text = string.Format("{0:0.##} : 1", highlightTextContrastRatio);
+				//ShowContrastRatioWarnings("Highlight/Text", highlightTextContrastRatio, tbHighTextWCAGWarningAA, tbHighTextWCAGWarningAALarge, tbHighTextWCAGWarningAAA, tbHighTextWCAGWarningAAALarge);
+			}
 		}
 
 		//private void ShowContrastRatioWarnings(string ratioName, double contrastRatio, TextBlock warningAA, TextBlock warningAALarge, TextBlock warningAAA, TextBlock warningAAALarge)
@@ -423,81 +456,139 @@ namespace HighlightExplorer
 		private void ctlBrightnessHighlightText_TextChanged(object sender, double e)
 		{
 			textBrightness = e;
+			SetSaturationSliderHue(ctlHueHighlightText.TextValue, e);
 			TextChanged();
 		}
 
 		private void ctlBrightnessHighlightText_HighlightChanged(object sender, double e)
 		{
 			highlightBrightness = e;
+			SetSaturationSliderHue(ctlHueHighlightText.HighlightValue, e);
 			HighlightChanged();
 		}
 
 		private void ctlBrightnessBackgroundForeground_ForegroundChanged(object sender, double e)
 		{
 			foregroundBrightness = e;
+			SetSaturationSliderHue(ctlHueBackgroundForeground.ForegroundValue, e);
+			if (!showingHighlighting)
+			{
+				textBrightness = e;
+				TextChanged();
+			}
 			ForegroundChanged();
 		}
 
 		private void ctlBrightnessBackgroundForeground_BackgroundChanged(object sender, double e)
 		{
 			backgroundBrightness = e;
+			SetSaturationSliderHue(ctlHueBackgroundForeground.BackgroundValue, e);
+			if (!showingHighlighting)
+			{
+				highlightBrightness = e;
+				HighlightChanged();
+			}
 			BackgroundChanged();
 		}
 
 		private void ctlHueHighlightText_HighlightChanged(object sender, double e)
 		{
 			highlightHue = e;
+			SetSaturationSliderHue(e, ctlBrightnessHighlightText.HighlightValue);
 			HighlightChanged();
 		}
 
 		private void ctlHueHighlightText_TextChanged(object sender, double e)
 		{
 			textHue = e;
+			SetSaturationSliderHue(e, ctlBrightnessHighlightText.TextValue);
 			TextChanged();
 		}
 
 		private void ctlHueBackgroundForeground_BackgroundChanged(object sender, double e)
 		{
 			backgroundHue = e;
+			SetSaturationSliderHue(e, ctlBrightnessBackgroundForeground.BackgroundValue);
+			if (!showingHighlighting)
+			{
+				highlightHue = e;
+				HighlightChanged();
+			}
 			BackgroundChanged();
+		}
+
+		private void SetSaturationSliderHue(double hue, double brightness)
+		{
+			clrSaturationStart.Color = new HueSatLight(hue, 0, brightness).AsRGB;
+			clrSaturationEnd.Color = new HueSatLight(hue, 1.0, brightness).AsRGB;
 		}
 
 		private void ctlHueBackgroundForeground_ForegroundChanged(object sender, double e)
 		{
 			foregroundHue = e;
+			SetSaturationSliderHue(e, ctlBrightnessBackgroundForeground.ForegroundValue);
+			if (!showingHighlighting)
+			{
+				textHue = e;
+				TextChanged();
+			}
 			ForegroundChanged();
 		}
 
 		private void ctlSaturationHighlightText_HighlightChanged(object sender, double e)
 		{
 			highlightSaturation = e;
+			SetSaturationSliderHue(ctlHueHighlightText.HighlightValue, ctlBrightnessHighlightText.HighlightValue);
 			HighlightChanged();
 		}
 
 		private void ctlSaturationHighlightText_TextChanged(object sender, double e)
 		{
 			textSaturation = e;
+			SetSaturationSliderHue(ctlHueHighlightText.TextValue, ctlBrightnessHighlightText.TextValue);
 			TextChanged();
 		}
 
 		private void ctlSaturationBackgroundForeground_BackgroundChanged(object sender, double e)
 		{
 			backgroundSaturation = e;
+			SetSaturationSliderHue(ctlHueBackgroundForeground.BackgroundValue, ctlBrightnessBackgroundForeground.BackgroundValue);
+			if (!showingHighlighting)
+			{
+				highlightSaturation = e;
+				HighlightChanged();
+			}
 			BackgroundChanged();
 		}
 
 		private void ctlSaturationBackgroundForeground_ForegroundChanged(object sender, double e)
 		{
 			foregroundSaturation = e;
+			SetSaturationSliderHue(ctlHueBackgroundForeground.ForegroundValue, ctlBrightnessBackgroundForeground.ForegroundValue);
+			if (!showingHighlighting)
+			{
+				textSaturation = e;
+				TextChanged();
+			}
 			ForegroundChanged();
+		}
+
+		void SetColors(string backStr, string foreStr)
+		{
+			ShowHighlighting(false);
+			tbxBackground.Text = backStr;
+			tbxForeground.Text = foreStr;
+			SetSaturationSliderHue(ctlHueBackgroundForeground.BackgroundValue, ctlBrightnessBackgroundForeground.BackgroundValue);
 		}
 
 		void SetColors(string backStr, string foreStr, string highlightStr, string textStr)
 		{
+			ShowHighlighting(true);
 			tbxBackground.Text = backStr;
 			tbxForeground.Text = foreStr;
 			tbxHighlight.Text = highlightStr;
 			tbxHighlightText.Text = textStr;
+			SetSaturationSliderHue(ctlHueBackgroundForeground.BackgroundValue, ctlBrightnessBackgroundForeground.BackgroundValue);
 		}
 
 		private void tbxBackground_TextChanged(object sender, TextChangedEventArgs e)
@@ -775,6 +866,313 @@ namespace HighlightExplorer
 		{
 			// TODO: Implement shift+Hue slider dragging to maintain perceived brightness
 		}
+
+		void SetSampleTextVisibility(Visibility visibility)
+		{
+			clrForegroundColor1.Visibility = visibility;
+			clrForegroundColor2.Visibility = visibility;
+			clrForegroundColor3.Visibility = visibility;
+			clrHighlightTextColor.Visibility = visibility;
+
+			clrForegroundGrayscale1.Visibility = visibility;
+			clrForegroundGrayscale2.Visibility = visibility;
+			clrForegroundGrayscale3.Visibility = visibility;
+			clrHighlightTextGrayscale.Visibility = visibility;
+		}
+
+		void UpdateSampleText()
+		{
+			if (!showingHighlighting && !showingForegroundText)
+			{
+				txtSampleHighlighting.Text = "Sample:";
+				SetSampleTextVisibility(Visibility.Hidden);
+			}
+			else
+			{
+				if (showingHighlighting)
+					txtSampleHighlighting.Text = "Sample Highlighting:";
+				else
+					txtSampleHighlighting.Text = "Sample Text:";
+				SetSampleTextVisibility(Visibility.Visible);
+			}
+		}
+
+		void ShowHighlighting(bool shouldShowHighlighting)
+		{
+			if (chkShowHighlighting.IsChecked != shouldShowHighlighting)
+				chkShowHighlighting.IsChecked = shouldShowHighlighting;
+
+			showingHighlighting = shouldShowHighlighting;
+
+			if (clrForegroundColor1 == null)
+				return;
+			if (shouldShowHighlighting)
+			{
+				chkShowForegroundText.IsChecked = true;
+
+				chkShowForegroundText.IsEnabled = false;
+				clrForegroundColor1.Text = "Another way to send ";
+				clrForegroundColor2.Text = "information in a presentation ";
+				clrForegroundColor3.Text = "is through                      . ";
+				clrHighlightTextColor.Text = "highlighting";
+
+				clrForegroundGrayscale1.Text = "Another way to send ";
+				clrForegroundGrayscale2.Text = "information in a presentation ";
+				clrForegroundGrayscale3.Text = "is through                      . ";
+				clrHighlightTextGrayscale.Text = "highlighting";
+
+				SetHighlightControlVisibility(Visibility.Visible);
+				highlightBrightness = ctlBrightnessHighlightText.HighlightValue;
+				highlightSaturation = ctlSaturationHighlightText.HighlightValue;
+				highlightHue = ctlHueHighlightText.HighlightValue;
+				textBrightness = ctlBrightnessHighlightText.TextValue;
+				textSaturation = ctlSaturationHighlightText.TextValue;
+				textHue = ctlHueHighlightText.TextValue;
+
+				HighlightChanged();
+				TextChanged();
+				UpdateIssues();
+			}
+			else
+			{
+				chkShowForegroundText.IsEnabled = true;
+				clrForegroundColor1.Text = "A great way to send ";
+				clrForegroundColor2.Text = "information in a presentation ";
+				clrForegroundColor3.Text = "is through text. ";
+				clrHighlightTextColor.Text = "";
+
+				clrForegroundGrayscale1.Text = "A great way to send ";
+				clrForegroundGrayscale2.Text = "information in a presentation ";
+				clrForegroundGrayscale3.Text = "is through text. ";
+				clrHighlightTextGrayscale.Text = "";
+
+				SetHighlightControlVisibility(Visibility.Hidden);
+
+				//SyncBrightness();
+				//SyncHue();
+				//SyncSaturation();
+				UpdateAll();
+			}
+
+			UpdateSampleText();
+
+			// clrBackground
+			// clrHighlight
+			// clrForegroundColor1
+			// clrForegroundColor2
+			// clrForegroundColor3
+			// clrHighlightTextColor
+		}
+
+		private void SetHighlightControlVisibility(Visibility visibility)
+		{
+			wcag1.Visibility = visibility;
+			wcag2.Visibility = visibility;
+			tbHighTextContrastRatio.Visibility = visibility;
+			tbHighTextWcagAAALargeFontCompliance.Visibility = visibility;
+			tbHighTextWcagAAACompliance.Visibility = visibility;
+			tbHighTextWcagAALargeFontCompliance.Visibility = visibility;
+			tbHighTextWcagAACompliance.Visibility = visibility;
+			ctlPerceivedBrightnessHighlightText.Visibility = visibility;
+
+			if (visibility == Visibility.Hidden)
+				HideHighlightStatusControls();
+
+			ctlBrightnessHighlightText.Visibility = visibility;
+			ctlHueHighlightText.Visibility = visibility;
+			ctlSaturationHighlightText.Visibility = visibility;
+			lblHighlight.Visibility = visibility;
+			tbxHighlight.Visibility = visibility;
+			lblHighlightText.Visibility = visibility;
+			tbxHighlightText.Visibility = visibility;
+
+			if (visibility == Visibility.Visible)
+				UpdateWcagWarnings();
+		}
+
+		private void HideHighlightStatusControls()
+		{
+			tbDistanceBackgroundToHighlight.Visibility = Visibility.Collapsed;
+			tbDistanceHighlightToText.Visibility = Visibility.Collapsed;
+			tbHighlightSaturationWarning.Visibility = Visibility.Collapsed;
+			icoHighTextAaYes.Visibility = Visibility.Hidden;
+			icoHighTextAaNo.Visibility = Visibility.Hidden;
+			icoHighTextAaLargeYes.Visibility = Visibility.Hidden;
+			icoHighTextAaLargeNo.Visibility = Visibility.Hidden;
+			icoHighTextAaaYes.Visibility = Visibility.Hidden;
+			icoHighTextAaaNo.Visibility = Visibility.Hidden;
+			icoHighTextAaaLargeYes.Visibility = Visibility.Hidden;
+			icoHighTextAaaLargeNo.Visibility = Visibility.Hidden;
+		}
+
+		private void SyncSaturation()
+		{
+			ctlSaturationHighlightText.HighlightValue = ctlSaturationBackgroundForeground.BackgroundValue;
+			ctlSaturationHighlightText.TextValue = ctlSaturationBackgroundForeground.ForegroundValue;
+		}
+
+		private void SyncHue()
+		{
+			ctlHueHighlightText.HighlightValue = ctlHueBackgroundForeground.BackgroundValue;
+			ctlHueHighlightText.TextValue = ctlHueBackgroundForeground.ForegroundValue;
+		}
+
+		private void SyncBrightness()
+		{
+			ctlBrightnessHighlightText.HighlightValue = ctlBrightnessBackgroundForeground.BackgroundValue;
+			ctlBrightnessHighlightText.TextValue = ctlBrightnessBackgroundForeground.ForegroundValue;
+		}
+
+		void UpdateAll()
+		{
+			//textBrightness = ctlBrightnessHighlightText.TextValue;
+			//highlightBrightness = ctlBrightnessHighlightText.HighlightValue;
+			foregroundBrightness = ctlBrightnessBackgroundForeground.ForegroundValue;
+			backgroundBrightness = ctlBrightnessBackgroundForeground.BackgroundValue;
+			//textHue = ctlHueHighlightText.TextValue;
+			//highlightHue = ctlHueHighlightText.HighlightValue;
+			foregroundHue = ctlHueBackgroundForeground.ForegroundValue;
+			backgroundHue = ctlHueBackgroundForeground.BackgroundValue;
+			//textSaturation = ctlSaturationHighlightText.TextValue;
+			//highlightSaturation = ctlSaturationHighlightText.HighlightValue;
+			foregroundSaturation = ctlSaturationBackgroundForeground.ForegroundValue;
+			backgroundSaturation = ctlSaturationBackgroundForeground.BackgroundValue;
+			//TextChanged();
+			//HighlightChanged();
+			ForegroundChanged();
+			BackgroundChanged();
+
+		}
+		private void chkShowHighlighting_Checked(object sender, RoutedEventArgs e)
+		{
+			ShowHighlighting(true);
+		}
+
+		private void chkShowHighlighting_Unchecked(object sender, RoutedEventArgs e)
+		{
+			ShowHighlighting(false);
+		}
+
+		private void rbnBlackOnWhite_Checked(object sender, RoutedEventArgs e)
+		{
+			SetColors("#FFFFFF", "#000000");
+		}
+
+		private void rbnWhiteOnBlack_Checked(object sender, RoutedEventArgs e)
+		{
+			SetColors("#000000", "#FFFFFF");
+		}
+
+		private void rbnWhiteOnRed_Checked(object sender, RoutedEventArgs e)
+		{
+			SetColors("#FF0000", "#FFFFFF");
+		}
+
+		private void rbnBlueOnRed_Checked(object sender, RoutedEventArgs e)
+		{
+			SetColors("#FF0000", "#6D6DFD");
+		}
+
+		private void chkShowForegroundText_Checked(object sender, RoutedEventArgs e)
+		{
+			ShowForegroundText(true);
+		}
+
+		void ShowForegroundText(bool shouldShowForegroundText)
+		{
+			showingForegroundText = shouldShowForegroundText;
+			if (grdWcagCompliance == null)
+				return;
+			ctlBrightnessBackgroundForeground.ShowForegroundControl = showingForegroundText;
+			ctlHueBackgroundForeground.ShowForegroundControl = showingForegroundText;
+			ctlSaturationBackgroundForeground.ShowForegroundControl = showingForegroundText;
+
+			if (showingForegroundText)
+			{
+				if (showingWarnings)
+					grdWcagCompliance.Visibility = Visibility.Visible;
+				if (showingPerceivedBrightness)
+					cvsDistanceAcrossPBS.Visibility = Visibility.Visible;
+				lblForeground.Visibility = Visibility.Visible;
+				tbxForeground.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				grdWcagCompliance.Visibility = Visibility.Hidden;
+				cvsDistanceAcrossPBS.Visibility = Visibility.Hidden;
+				lblForeground.Visibility = Visibility.Hidden;
+				tbxForeground.Visibility = Visibility.Hidden;
+			}
+
+			UpdateSampleText();
+		}
+		private void chkShowForegroundText_Unchecked(object sender, RoutedEventArgs e)
+		{
+			ShowForegroundText(false);
+		}
+
+		private void chkShowWarnings_Checked(object sender, RoutedEventArgs e)
+		{
+			ShowWarnings(true);
+		}
+
+		void SetWarningControlVisibility(Visibility visibility)
+		{
+			if (tbIssues == null)
+				return;
+			tbIssues.Visibility = visibility;
+			spDistances.Visibility = visibility;
+			grdWcagCompliance.Visibility = visibility;
+		}
+		void ShowWarnings(bool shouldShowWarnings)
+		{
+			showingWarnings = shouldShowWarnings;
+			if (showingWarnings)
+				SetWarningControlVisibility(Visibility.Visible);
+			else
+				SetWarningControlVisibility(Visibility.Hidden);
+		}
+
+		private void chkShowWarnings_Unchecked(object sender, RoutedEventArgs e)
+		{
+			ShowWarnings(false);
+		}
+
+		void SetPerceivedBrightnessControlVisibility(Visibility visibility)
+		{
+			if (cvsDistanceAcrossPBS == null)
+				return;
+			if (visibility == Visibility.Hidden)
+				cvsDistanceAcrossPBS.Visibility = visibility;
+			else if (showingForegroundText)
+				cvsDistanceAcrossPBS.Visibility = visibility;
+			vbxPerceivedBrightness.Visibility = visibility;
+			tbPerceivedBrightness.Visibility = visibility;
+		}
+
+		void ShowPerceivedBrightness(bool shouldShowPerceivedBrightness)
+		{
+			showingPerceivedBrightness = shouldShowPerceivedBrightness;
+
+			if (showingPerceivedBrightness)
+				SetPerceivedBrightnessControlVisibility(Visibility.Visible);
+			else
+				SetPerceivedBrightnessControlVisibility(Visibility.Hidden);
+		}
+		private void chkShowPerceivedBrightness_Checked(object sender, RoutedEventArgs e)
+		{
+			ShowPerceivedBrightness(true);
+		}
+
+		private void chkShowPerceivedBrightness_Unchecked(object sender, RoutedEventArgs e)
+		{
+			ShowPerceivedBrightness(false);
+		}
+
+		private void rbnPinkOnRed_Checked(object sender, RoutedEventArgs e)
+		{
+			SetColors("#FE4242", "#FED4D4");
+		}
 	}
-	
+
 }

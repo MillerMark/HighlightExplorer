@@ -60,9 +60,13 @@ namespace HighlightExplorer
 
 		static bool IsCloseTo(FrameworkElement element1, FrameworkElement element2)
 		{
-			var pos1 = (double)(element1.Tag);
-			var pos2 = (double)(element2.Tag);
-			return Math.Abs(pos1 - pos2) < 0.1;
+			if (element1.Visibility == Visibility.Visible && element2.Visibility == Visibility.Visible)
+			{
+				var pos1 = (double)(element1.Tag);
+				var pos2 = (double)(element2.Tag);
+				return Math.Abs(pos1 - pos2) < 0.1;
+			}
+			return false;
 		}
 
 		public static void MoveUpIfSpaceAvailable(FrameworkElement element1, FrameworkElement element2, int padding)

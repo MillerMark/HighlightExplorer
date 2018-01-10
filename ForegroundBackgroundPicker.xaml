@@ -29,7 +29,7 @@
 
 		</StackPanel>
 
-		<Viewbox x:Name="ctlForeground" Height="50" Canvas.Left="9" Canvas.Top="31">
+		<Viewbox x:Name="ctlForeground" Height="50" Canvas.Left="9" Canvas.Top="31" >
 			<Canvas Width="144" Height="78">
 				<Path Fill="#FF000000" Stroke="#FFD9D9D9" StrokeThickness="1" StrokeMiterLimit="10">
 					<Path.Data>
