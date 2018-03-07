@@ -985,6 +985,8 @@ namespace HighlightExplorer
 			tbxHighlight.Visibility = visibility;
 			lblHighlightText.Visibility = visibility;
 			tbxHighlightText.Visibility = visibility;
+			btnEyeDropHighlight.Visibility = visibility;
+			btnEyeDropHighlightText.Visibility = visibility;
 
 			if (visibility == Visibility.Visible)
 				UpdateWcagWarnings();
@@ -1173,6 +1175,31 @@ namespace HighlightExplorer
 		{
 			SetColors("#FE4242", "#FED4D4");
 		}
-	}
 
+		public void GetColorUnderEyedropper(TextBox textBox)
+		{
+			EyeDropperMouseHook.TextBox = textBox;
+			EyeDropperMouseHook.Set();
+		}
+
+		private void btnEyeDropBackground_Click(object sender, RoutedEventArgs e)
+		{
+			GetColorUnderEyedropper(tbxBackground);
+		}
+
+		private void btnEyeDropForeground_Click(object sender, RoutedEventArgs e)
+		{
+			GetColorUnderEyedropper(tbxForeground);
+		}
+
+		private void btnEyeDropHighlight_Click(object sender, RoutedEventArgs e)
+		{
+			GetColorUnderEyedropper(tbxHighlight);
+		}
+
+		private void btnEyeDropHighlightText_Click(object sender, RoutedEventArgs e)
+		{
+			GetColorUnderEyedropper(tbxHighlightText);
+		}
+	}
 }

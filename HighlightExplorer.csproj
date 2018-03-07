@@ -37,6 +37,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,8 +60,10 @@
     <Compile Include="BoolToVisibleOrHidden.cs" />
     <Compile Include="ColorExtensions.cs" />
     <Compile Include="HueSatLight.cs" />
+    <Compile Include="EyeDropperMouseHook.cs" />
     <Compile Include="PositionChangedEventArgs.cs" />
     <Compile Include="SliderHelper.cs" />
+    <Compile Include="TextBoxEyeDropperExtensions.cs" />
     <Page Include="ForegroundBackgroundPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
