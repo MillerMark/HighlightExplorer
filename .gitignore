@@ -302,3 +302,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 .cr/Settings.xml
+.cr/personal/Navigation/Code Places.xml

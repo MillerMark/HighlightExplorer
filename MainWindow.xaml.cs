@@ -75,6 +75,8 @@ namespace HighlightExplorer
 
 		void HighlightChanged()
 		{
+			if (!IsInitialized)
+				return;
 			HueSatLight hueSatLight = GetHighlightColor();
 			clrHighlight.Fill = new SolidColorBrush(hueSatLight.AsRGB);
 
@@ -105,6 +107,8 @@ namespace HighlightExplorer
 
 		void TextChanged()
 		{
+			if (!IsInitialized)
+				return;
 			HueSatLight hueSatLight = GetTextColor();
 			clrHighlightTextColor.Foreground = new SolidColorBrush(hueSatLight.AsRGB);
 
@@ -127,6 +131,8 @@ namespace HighlightExplorer
 
 		void ForegroundChanged()
 		{
+			if (!IsInitialized)
+				return;
 			HueSatLight hueSatLight = GetForegroundColor();
 			var newColor = hueSatLight.AsRGB;
 			clrForegroundColor1.Foreground = new SolidColorBrush(newColor);
@@ -142,6 +148,8 @@ namespace HighlightExplorer
 			{
 				clrHighlightTextColor.Foreground = new SolidColorBrush(newColor);
 				clrHighlightTextGrayscale.Foreground = new SolidColorBrush(newGrayScale);
+				tbxSampleEdit.Foreground = clrHighlightTextColor.Foreground;
+				tbxSamplePerceivedBrightness.Foreground = clrHighlightTextGrayscale.Foreground;
 			}
 
 			ctlPerceivedBrightnessBackgroundForeground.ForegroundValue = newGrayScale.GetBrightness();
@@ -160,6 +168,9 @@ namespace HighlightExplorer
 
 		void BackgroundChanged()
 		{
+			if (!IsInitialized)
+				return;
+
 			HueSatLight hueSatLight = GetBackgroundColor();
 			clrBackground.Fill = new SolidColorBrush(hueSatLight.AsRGB);
 
@@ -869,6 +880,10 @@ namespace HighlightExplorer
 
 		void SetSampleTextVisibility(Visibility visibility)
 		{
+			if (!showingHighlighting)
+			{
+				visibility = Visibility.Hidden;
+			}
 			clrForegroundColor1.Visibility = visibility;
 			clrForegroundColor2.Visibility = visibility;
 			clrForegroundColor3.Visibility = visibility;
@@ -882,7 +897,18 @@ namespace HighlightExplorer
 
 		void UpdateSampleText()
 		{
-			if (!showingHighlighting && !showingForegroundText)
+			if (!showingForegroundText)
+			{
+				tbxSamplePerceivedBrightness.Visibility = Visibility.Hidden;
+				tbxSampleEdit.Visibility = Visibility.Hidden;
+			}
+			else
+			{
+				tbxSamplePerceivedBrightness.Visibility = Visibility.Visible;
+				tbxSampleEdit.Visibility = Visibility.Visible;
+			}
+
+			if (!showingHighlighting)
 			{
 				txtSampleHighlighting.Text = "Sample:";
 				SetSampleTextVisibility(Visibility.Hidden);
@@ -909,7 +935,6 @@ namespace HighlightExplorer
 			if (shouldShowHighlighting)
 			{
 				chkShowForegroundText.IsChecked = true;
-
 				chkShowForegroundText.IsEnabled = false;
 				clrForegroundColor1.Text = "Another way to send ";
 				clrForegroundColor2.Text = "information in a presentation ";
@@ -929,6 +954,8 @@ namespace HighlightExplorer
 				textSaturation = ctlSaturationHighlightText.TextValue;
 				textHue = ctlHueHighlightText.TextValue;
 
+				DisableCustomTextEdit();
+
 				HighlightChanged();
 				TextChanged();
 				UpdateIssues();
@@ -936,15 +963,17 @@ namespace HighlightExplorer
 			else
 			{
 				chkShowForegroundText.IsEnabled = true;
-				clrForegroundColor1.Text = "A great way to send ";
-				clrForegroundColor2.Text = "information in a presentation ";
-				clrForegroundColor3.Text = "is through text. ";
-				clrHighlightTextColor.Text = "";
+				//clrForegroundColor1.Text = "A great way to send ";
+				//clrForegroundColor2.Text = "information in a presentation ";
+				//clrForegroundColor3.Text = "is through text. ";
+				//clrHighlightTextColor.Text = "";
 
-				clrForegroundGrayscale1.Text = "A great way to send ";
-				clrForegroundGrayscale2.Text = "information in a presentation ";
-				clrForegroundGrayscale3.Text = "is through text. ";
-				clrHighlightTextGrayscale.Text = "";
+				//clrForegroundGrayscale1.Text = "A great way to send ";
+				//clrForegroundGrayscale2.Text = "information in a presentation ";
+				//clrForegroundGrayscale3.Text = "is through text. ";
+				//clrHighlightTextGrayscale.Text = "";
+
+				EnableCustomTextEdit();
 
 				SetHighlightControlVisibility(Visibility.Hidden);
 
@@ -1097,6 +1126,7 @@ namespace HighlightExplorer
 					cvsDistanceAcrossPBS.Visibility = Visibility.Visible;
 				lblForeground.Visibility = Visibility.Visible;
 				tbxForeground.Visibility = Visibility.Visible;
+				btnEyeDropForeground.Visibility = Visibility.Visible;
 			}
 			else
 			{
@@ -1104,6 +1134,7 @@ namespace HighlightExplorer
 				cvsDistanceAcrossPBS.Visibility = Visibility.Hidden;
 				lblForeground.Visibility = Visibility.Hidden;
 				tbxForeground.Visibility = Visibility.Hidden;
+				btnEyeDropForeground.Visibility = Visibility.Hidden;
 			}
 
 			UpdateSampleText();
@@ -1200,6 +1231,51 @@ namespace HighlightExplorer
 		private void btnEyeDropHighlightText_Click(object sender, RoutedEventArgs e)
 		{
 			GetColorUnderEyedropper(tbxHighlightText);
+		}
+
+		private void tbxSampleEdit_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (chkShowHighlighting.IsChecked == true)
+				return;
+			else
+			{
+				EnableCustomTextEdit();
+			}
+		}
+
+		private void EnableCustomTextEdit()
+		{
+			tbxSampleEdit.IsReadOnly = false;
+			tbxSampleEdit.Foreground = clrForegroundColor1.Foreground;
+			tbxSamplePerceivedBrightness.Foreground = clrForegroundGrayscale1.Foreground;
+			tbxSamplePerceivedBrightness.Visibility = Visibility.Visible;
+			clrForegroundColor1.Visibility = Visibility.Hidden;
+			clrForegroundColor2.Visibility = Visibility.Hidden;
+			clrForegroundColor3.Visibility = Visibility.Hidden;
+			clrForegroundGrayscale1.Visibility = Visibility.Hidden;
+			clrForegroundGrayscale2.Visibility = Visibility.Hidden;
+			clrForegroundGrayscale3.Visibility = Visibility.Hidden;
+		}
+
+		private void DisableCustomTextEdit()
+		{
+			tbxSampleEdit.IsReadOnly = true;
+			tbxSampleEdit.Foreground = Brushes.Transparent;
+			tbxSamplePerceivedBrightness.Foreground = Brushes.Transparent;
+			tbxSamplePerceivedBrightness.Visibility = Visibility.Hidden;
+			clrForegroundColor1.Visibility = Visibility.Visible;
+			clrForegroundColor2.Visibility = Visibility.Visible;
+			clrForegroundColor3.Visibility = Visibility.Visible;
+			clrForegroundGrayscale1.Visibility = Visibility.Visible;
+			clrForegroundGrayscale2.Visibility = Visibility.Visible;
+			clrForegroundGrayscale3.Visibility = Visibility.Visible;
+		}
+
+		private void tbxSampleEdit_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if (!IsInitialized)
+				return;
+			tbxSamplePerceivedBrightness.Text = tbxSampleEdit.Text;
 		}
 	}
 }
